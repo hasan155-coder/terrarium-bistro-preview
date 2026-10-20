@@ -573,7 +573,7 @@ em,.it{font-style:italic}
 .door .ico svg *{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
 .door .ico svg .fillc{fill:currentColor;stroke:none}
 .door-l{font:400 clamp(1.25rem,1.9vw,1.6rem)/1.1 var(--f-d)}
-.door-v{font-size:.78rem;color:var(--cream-2);transition:color .5s;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.door-v{font-size:.78rem;line-height:1.35;color:var(--cream-2);transition:color .5s;max-width:100%;overflow-wrap:anywhere}
 .door:hover .door-v,.door:focus-within .door-v{color:rgba(24,23,19,.8)}
 .door-copy{position:absolute;right:50%;transform:translateX(50%);top:16px;z-index:2;font:500 .56rem/1 var(--f-b);letter-spacing:.2em;text-transform:uppercase;padding:.5rem .8rem;border-radius:999px;border:1px solid var(--line);color:var(--cream-2);background:rgba(24,23,19,.6);opacity:0;transition:opacity .4s}
 .door:hover .door-copy,.door:focus-within .door-copy{opacity:1}
@@ -1316,15 +1316,16 @@ em,.it{font-style:italic}
 const SITE = {
   phone: '01829 000 000',                       // PLACEHOLDER
   phoneIntl: '+441829000000',                   // PLACEHOLDER
-  email: 'hello@terrariumbistro.co.uk',          // PLACEHOLDER
+  email: 'info@terrariumbistro.co.uk',
   whatsapp: '441829000000',                     // PLACEHOLDER (country code, no +)
-  addressLine: 'Tarporley, Cheshire',            // add street + postcode
-  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Terrarium%20Bistro%20Tarporley',
-  googleReviewsUrl: 'https://www.google.com/maps/search/?api=1&query=Terrarium%20Bistro%20Tarporley',
+  addressLine: '44 High St, Tarporley CW6 0DX',
+  website: 'www.terrariumbistro.co.uk',
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Terrarium%20Bistro%2C%2044%20High%20St%2C%20Tarporley%20CW6%200DX',
+  googleReviewsUrl: 'https://www.google.com/maps/search/?api=1&query=Terrarium%20Bistro%2C%2044%20High%20St%2C%20Tarporley%20CW6%200DX',
   tripadvisorUrl: 'https://www.tripadvisor.co.uk/Search?q=Terrarium%20Bistro%20Tarporley',
-  instagramUrl: 'https://www.instagram.com/terrariumbistro/',  // PLACEHOLDER handle
-  instagramHandle: '@terrariumbistro',
-  facebookUrl: 'https://www.facebook.com/terrariumbistro',      // PLACEHOLDER page
+  instagramUrl: 'https://www.instagram.com/terrariumbistro.tarporley/',
+  instagramHandle: '@terrariumbistro.tarporley',
+  facebookUrl: 'https://www.facebook.com/share/1hcMNJX32f/',
   bookingUrl: 'https://tableagent.com/cheshire/terrarium-bistro/table-search/',  // TableAgent live booking page
   hours: [],   // e.g. [['Tuesday to Saturday','9am to 10pm'],['Sunday','10am to 6pm']]
   booking: {
@@ -2204,7 +2205,7 @@ const Voucher = {
   mailParts() {
     const name = V.to, from = V.from;
     const subject = `A gift from ${from}: an evening at Terrarium Bistro`;
-    const body = `Dear ${name},\n\n${from} has sent you a Terrarium Bistro gift voucher worth £${V.amount}.\n\n${V.msg ? '“' + V.msg + '”\n\n' : ''}Voucher number: ${V.serial}\nValid until: ${V.expiry}\n\nBook your table at Terrarium Bistro in Tarporley and quote your voucher number when you book or pay.\n\nTerrarium Bistro · ${SITE.addressLine}\n${SITE.phone} · ${SITE.email}`;
+    const body = `Dear ${name},\n\n${from} has sent you a Terrarium Bistro gift voucher worth £${V.amount}.\n\n${V.msg ? '“' + V.msg + '”\n\n' : ''}Voucher number: ${V.serial}\nValid until: ${V.expiry}\n\nBook your table at ${SITE.website} and quote your voucher number when you book or pay.\n\nTerrarium Bistro · ${SITE.addressLine}\n${SITE.phone} · ${SITE.email} · ${SITE.website}`;
     return { subject, body };
   },
   mailText() { const m = this.mailParts(); return `Subject: ${m.subject}\n\n${m.body}`; },
@@ -2283,7 +2284,7 @@ function buildDoors() {
     { l: 'Tripadvisor', v: 'Read & review', href: SITE.tripadvisorUrl, ic: 'laurel' }
   ];
   const doorsHtml = doors.map((d, i) => `<div class="door" data-r="up" style="--rd:${(i % 4) * .08 + Math.floor(i / 4) * .12}s">
-      <a class="door-link" href="${esc(d.href)}" ${d.self ? '' : 'target="_blank" rel="noopener"'} aria-label="${esc(d.l)}: ${esc(d.v)}"><span class="ico" aria-hidden="true">${ICONS[d.ic]}</span><span class="door-l">${esc(d.l)}</span><span class="door-v">${esc(d.v)}</span></a>
+      <a class="door-link" href="${esc(d.href)}" ${d.self ? '' : 'target="_blank" rel="noopener"'} aria-label="${esc(d.l)}: ${esc(d.v)}"><span class="ico" aria-hidden="true">${ICONS[d.ic]}</span><span class="door-l">${esc(d.l)}</span><span class="door-v">${esc(d.v).replace(/(.)@/g, '$1@<wbr>').replace(/(\w)\.(\w{5,})/g, '$1<wbr>.$2')}</span></a>
       ${d.copy ? `<button class="door-copy" type="button" data-copy="${esc(d.copy)}" data-cl="${esc(d.cl)}">Copy</button>` : ''}
     </div>`).join('');
   $$('[data-doors]').forEach(box => {
