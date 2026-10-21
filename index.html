@@ -1205,7 +1205,7 @@ em,.it{font-style:italic}
   <section class="wrap book-grid" style="padding-bottom:clamp(5rem,10vw,9rem)">
     <aside class="book-side">
       <h1 class="d-xl" data-r="words">Reserve your <em class="shimmer">evening.</em></h1>
-      <p class="lead" data-r="up" style="--rd:.25s">Choose your date, time and party size from our live reservations book.</p>
+      <p class="lead" data-r="up" style="--rd:.25s">Choose your party, date and time. We will take care of the rest.</p>
       <div class="arch" data-r="clip" style="--rd:.2s"><img src="img/white-wine.jpg" alt="Wine being poured at a candlelit table" style="object-position:52% 40%"></div>
       <div class="book-note" data-r="up">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5h2.6l1.4 3.8-1.9 1.3a10.5 10.5 0 0 0 6.7 6.7l1.3-1.9 3.8 1.4v2.6a2 2 0 0 1-2.2 2A16.4 16.4 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2z"/></svg>
@@ -1213,18 +1213,64 @@ em,.it{font-style:italic}
       </div>
     </aside>
 
-    <div class="card ta" id="bookCard" data-r="up" style="--rd:.15s">
-      <div class="ta-ring" aria-hidden="true"><svg><use href="#mono"/></svg></div>
-      <span class="eyebrow">Live availability</span>
-      <h2 class="d-md">Find your table in our reservations book.</h2>
-      <p class="body">See every table that is still free, in real time. Booking opens on our secure reservations page and takes about a minute.</p>
-      <ol class="ta-steps">
-        <li><b>i.</b><span>Pick a date and time<small>Only the times we can still seat you are shown.</small></span></li>
-        <li><b>ii.</b><span>Choose your party size<small>A bigger group? Call us and we will arrange it.</small></span></li>
-        <li><b>iii.</b><span>Add your details<small>Name, phone and email, so we can confirm your table.</small></span></li>
-      </ol>
-      <a class="btn btn--solid ta-cta" data-cfg-href="bookingUrl" href="#" target="_blank" rel="noopener" data-magnetic>Check availability &amp; book <svg class="arr"><use href="#arr"/></svg></a>
-      <p class="ta-foot"><span>Opens in a new tab</span><span>Reservations by TableAgent</span></p>
+    <div class="card" id="bookCard" data-r="up" style="--rd:.15s">
+      <div class="steps" id="bSteps">
+        <button type="button" data-step="0" class="is-on"><i></i>Guests</button>
+        <button type="button" data-step="1" disabled><i></i>Date</button>
+        <button type="button" data-step="2" disabled><i></i>Time</button>
+        <button type="button" data-step="3" disabled><i></i>Details</button>
+      </div>
+
+      <div class="panel is-on" data-panel="0">
+        <h2 class="d-md">How many guests?</h2>
+        <div class="chips" id="bGuests"></div>
+        <div class="big-note" id="bLarge" hidden>For nine or more guests, please call us on <span data-cfg="phone"></span>. We will set the table and talk you through menus for groups.</div>
+      </div>
+
+      <div class="panel" data-panel="1">
+        <h2 class="d-md">Pick a date</h2>
+        <div class="cal-head"><strong id="calMonth"></strong><div><button type="button" id="calPrev" aria-label="Previous month"><svg style="transform:scaleX(-1)"><use href="#arr"/></svg></button><button type="button" id="calNext" aria-label="Next month"><svg><use href="#arr"/></svg></button></div></div>
+        <div class="cal" id="cal"></div>
+      </div>
+
+      <div class="panel" data-panel="2">
+        <h2 class="d-md">Choose a time</h2>
+        <div id="bSlots"></div>
+      </div>
+
+      <div class="panel" data-panel="3">
+        <h2 class="d-md">Your details</h2>
+        <form id="bForm" novalidate>
+          <div class="fields">
+            <div class="f"><label for="bFirst">First name</label><input id="bFirst" name="first" autocomplete="given-name" required><span class="err"></span></div>
+            <div class="f"><label for="bLast">Last name</label><input id="bLast" name="last" autocomplete="family-name" required><span class="err"></span></div>
+            <div class="f"><label for="bEmail">Email</label><input id="bEmail" name="email" type="email" autocomplete="email" required><span class="err"></span></div>
+            <div class="f"><label for="bPhone">Mobile</label><input id="bPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required><span class="err"></span></div>
+            <div class="f f--full"><span class="lbl">Is it a special occasion?</span><div class="occ" id="bOcc"></div></div>
+            <div class="f f--full"><label for="bNotes">Anything we should know?</label><textarea id="bNotes" name="notes" placeholder="Allergies, high chair, a quiet corner…"></textarea></div>
+            <label class="check f--full"><input type="checkbox" id="bNews"> Send me news of new menus and events at Terrarium. You can unsubscribe at any time.</label>
+            <input type="text" id="bHoney" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+            <p class="f--full" style="margin:0;font-size:.8rem;color:var(--mute)">We use your details only to manage your booking. Our team confirms every request by email or phone.</p>
+            <div class="big-note f--full" id="bSendErr" role="alert" hidden></div>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel" data-panel="4">
+        <div class="done" id="bDone">
+          <svg class="seal" viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="55" r="52" pathLength="400"/><path class="s-arch" pathLength="400" d="M35 84V50a20 20 0 0 1 40 0v34"/><path class="s-tick" pathLength="400" d="M44 63l8 8 15-17"/></svg>
+          <h2 class="d-lg">Your table is <em class="shimmer">requested.</em></h2>
+          <p class="body" id="bDoneText"></p>
+          <dl class="done-list" id="bDoneList"></dl>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap"><a class="btn btn--solid" id="bCal" href="#" target="_blank" rel="noopener">Save the date in Google Calendar</a><button class="btn btn--ghost" type="button" id="bAgain">Make another booking</button></div>
+          <div class="preview-note" id="bPreviewNote" hidden><span>✦</span><span><b>Preview.</b> Requests are only sent from the live website, not from this Claude preview.</span></div>
+        </div>
+      </div>
+
+      <div class="ticket" id="bTicket">
+        <div class="ticket-sum"><span class="eyebrow">Your table</span><strong id="bSum">Choose your party size</strong></div>
+        <div class="ticket-btns"><button class="btn btn--ghost" type="button" id="bBack" hidden>Back</button><button class="btn btn--solid" type="button" id="bNext" disabled>Continue <svg class="arr"><use href="#arr"/></svg></button></div>
+      </div>
     </div>
   </section>
 </section>
@@ -1402,14 +1448,17 @@ const SITE = {
   instagramUrl: 'https://www.instagram.com/terrariumbistro.tarporley/',
   instagramHandle: '@terrariumbistro.tarporley',
   facebookUrl: 'https://www.facebook.com/share/1hcMNJX32f/',
-  bookingUrl: 'https://tableagent.com/cheshire/terrarium-bistro/table-search/',  // TableAgent live booking page
+  bookingEndpoint: 'https://formsubmit.co/ajax/info@terrariumbistro.co.uk',  // table requests are emailed here
   hours: [['Monday', '10:00 – 22:00'], ['Tuesday', 'Closed'], ['Wednesday to Sunday', '10:00 – 22:00']],   // e.g. [['Tuesday to Saturday','9am to 10pm'],['Sunday','10am to 6pm']]
   booking: {
     maxOnline: 8,
     daysAhead: 120,
-    closedWeekdays: [],           // 0 = Sunday … 6 = Saturday
-    lunch: ['12:00','12:30','13:00','13:30','14:00','14:30'],
-    dinner: ['17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00']
+    closedWeekdays: [2],          // 0 = Sunday … 6 = Saturday (closed Tuesdays)
+    slots: [
+      ['Breakfast', ['10:00','10:30','11:00','11:30']],
+      ['Lunch', ['12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30']],
+      ['Dinner', ['17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00']]
+    ]
   },
   voucher: { amounts:[25,50,75,100,150,200], min:10, max:500, validityMonths:12 },
   previewMode: true               // false hides the "Preview build" notes
@@ -2046,6 +2095,156 @@ LB.el.addEventListener('click', e => {
 (() => { let sx = null; LB.el.addEventListener('pointerdown', e => sx = e.clientX); LB.el.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (LB.el.classList.contains('is-zoom')) return; if (Math.abs(dx) > 50) LB.step(dx < 0 ? 1 : -1); }); })();
 
 /* =====================================================================
+   BOOKING
+   ===================================================================== */
+const B = { step: 0, guests: null, date: null, time: null, occ: 'None', view: null };
+const Book = {
+  init() {
+    const gwrap = $('#bGuests');
+    for (let n = 1; n <= SITE.booking.maxOnline; n++) gwrap.insertAdjacentHTML('beforeend', `<button type="button" class="chip" data-g="${n}" aria-pressed="false">${n}</button>`);
+    gwrap.insertAdjacentHTML('beforeend', `<button type="button" class="chip" data-g="big" aria-pressed="false">${SITE.booking.maxOnline + 1}+</button>`);
+    gwrap.addEventListener('click', e => {
+      const b = e.target.closest('.chip'); if (!b) return;
+      $$('.chip', gwrap).forEach(c => { c.classList.toggle('is-on', c === b); c.setAttribute('aria-pressed', c === b); });
+      const big = b.dataset.g === 'big'; $('#bLarge').hidden = !big;
+      B.guests = big ? null : +b.dataset.g; this.sync();
+      if (!big) setTimeout(() => { if (B.step === 0 && B.guests) this.goStep(1); }, 380);
+    });
+    const t = today(); B.view = new Date(t.getFullYear(), t.getMonth(), 1);
+    $('#calPrev').addEventListener('click', () => { B.view.setMonth(B.view.getMonth() - 1); this.cal(); });
+    $('#calNext').addEventListener('click', () => { B.view.setMonth(B.view.getMonth() + 1); this.cal(); });
+    $('#cal').addEventListener('click', e => {
+      const b = e.target.closest('button[data-d]'); if (!b) return;
+      B.date = new Date(b.dataset.d + 'T00:00:00'); B.time = null; this.cal(); this.slots(); this.sync();
+      setTimeout(() => { if (B.step === 1) this.goStep(2); }, 380);
+    });
+    $('#bSlots').addEventListener('click', e => {
+      const b = e.target.closest('.chip'); if (!b || b.disabled) return;
+      B.time = b.dataset.t; $$('#bSlots .chip').forEach(c => { c.classList.toggle('is-on', c === b); c.setAttribute('aria-pressed', c === b); }); this.sync();
+      setTimeout(() => { if (B.step === 2) this.goStep(3); }, 380);
+    });
+    const occ = ['None', 'Birthday', 'Anniversary', 'Date night', 'Celebration', 'Business'];
+    $('#bOcc').innerHTML = occ.map((o, i) => `<button type="button" data-o="${o}" class="${i ? '' : 'is-on'}" aria-pressed="${!i}">${o}</button>`).join('');
+    $('#bOcc').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; B.occ = b.dataset.o; $$('#bOcc button').forEach(x => { x.classList.toggle('is-on', x === b); x.setAttribute('aria-pressed', x === b); }); });
+    $$('#bSteps button').forEach(b => b.addEventListener('click', () => this.goStep(+b.dataset.step)));
+    $('#bNext').addEventListener('click', () => { if (B.step < 3) this.goStep(B.step + 1); else this.submit(); });
+    $('#bBack').addEventListener('click', () => this.goStep(B.step - 1));
+    $('#bAgain').addEventListener('click', () => this.reset());
+    $$('#bForm input').forEach(inp => inp.addEventListener('input', () => { inp.closest('.f')?.classList.remove('is-bad'); const er = inp.closest('.f')?.querySelector('.err'); if (er) er.textContent = ''; this.sync(); }));
+    this.cal(); this.slots(); this.sync();
+  },
+  valid(s) { return s === 0 ? !!B.guests : s === 1 ? !!B.date : s === 2 ? !!B.time : true; },
+  goStep(s) {
+    if (s < 0 || s > 3) return;
+    for (let k = 0; k < s; k++) if (!this.valid(k)) return;
+    B.step = s;
+    $$('#bookCard .panel').forEach(p => p.classList.toggle('is-on', +p.dataset.panel === s));
+    if (s === 1) this.cal(); if (s === 2) this.slots();
+    this.sync();
+    const card = $('#bookCard'); const top = card.getBoundingClientRect().top;
+    if (top < 60 || top > innerHeight * 0.5) scrollToY(scrollY + top - 100);
+  },
+  sync() {
+    $$('#bSteps button').forEach((b, k) => {
+      b.classList.toggle('is-on', k === B.step); b.classList.toggle('is-done', k < B.step || (k !== B.step && this.valid(k) && k < 3));
+      let ok = true; for (let j = 0; j < k; j++) if (!this.valid(j)) ok = false; b.disabled = !ok;
+    });
+    const parts = [];
+    if (B.guests) parts.push(`${B.guests} ${B.guests === 1 ? 'guest' : 'guests'}`);
+    if (B.date) parts.push(fmtDay(B.date));
+    if (B.time) parts.push(B.time);
+    $('#bSum').textContent = parts.length ? parts.join(' · ') : 'Choose your party size';
+    $('#bBack').hidden = B.step === 0;
+    const nx = $('#bNext');
+    nx.disabled = !this.valid(B.step);
+    nx.firstChild.textContent = B.step === 3 ? 'Request table ' : 'Continue ';
+  },
+  cal() {
+    const t = today(), max = new Date(t); max.setDate(max.getDate() + SITE.booking.daysAhead);
+    const v = B.view, y = v.getFullYear(), m = v.getMonth();
+    $('#calMonth').textContent = v.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+    $('#calPrev').disabled = y === t.getFullYear() && m === t.getMonth();
+    $('#calNext').disabled = new Date(y, m + 1, 1) > max;
+    const first = new Date(y, m, 1), off = (first.getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
+    let h = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map(d => `<span class="dow" aria-hidden="true">${d}</span>`).join('');
+    for (let k = 0; k < off; k++) h += '<span></span>';
+    for (let d = 1; d <= days; d++) {
+      const dt = new Date(y, m, d), dis = dt < t || dt > max || SITE.booking.closedWeekdays.includes(dt.getDay());
+      const cls = [sameDay(dt, t) ? 'is-today' : '', sameDay(dt, B.date) ? 'is-on' : ''].join(' ');
+      h += `<button type="button" class="${cls}" data-d="${ymd(dt)}" ${dis ? 'disabled' : ''} aria-label="${fmtLong(dt)}${dis ? ', unavailable' : ''}" aria-pressed="${sameDay(dt, B.date)}">${d}</button>`;
+    }
+    $('#cal').innerHTML = h;
+  },
+  slots() {
+    const now = new Date(), isToday = B.date && sameDay(B.date, now);
+    const mk = (label, arr) => `<div class="slot-group"><span class="eyebrow">${label}</span><div class="chips chips--time">${arr.map(t => {
+      const [hh, mm] = t.split(':').map(Number); const past = isToday && (hh * 60 + mm) < (now.getHours() * 60 + now.getMinutes() + 60);
+      return `<button type="button" class="chip${B.time === t ? ' is-on' : ''}" data-t="${t}" ${past ? 'disabled style="opacity:.3"' : ''} aria-pressed="${B.time === t}">${t}</button>`;
+    }).join('')}</div></div>`;
+    $('#bSlots').innerHTML = (B.date ? `<p class="body" style="margin:-.6rem 0 1.4rem">${fmtLong(B.date)} · ${B.guests || ''} ${B.guests === 1 ? 'guest' : 'guests'}</p>` : '') + SITE.booking.slots.map(([label, times]) => mk(label, times)).join('');
+  },
+  check() {
+    let ok = true;
+    const rules = { bFirst: v => v.trim().length > 0 || 'Please add your first name', bLast: v => v.trim().length > 0 || 'Please add your last name', bEmail: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || 'Please check your email address', bPhone: v => v.replace(/\D/g, '').length >= 10 || 'Please add a UK mobile number' };
+    Object.entries(rules).forEach(([id, fn]) => {
+      const inp = $('#' + id), r = fn(inp.value), f = inp.closest('.f');
+      if (r !== true) { ok = false; f.classList.add('is-bad'); $('.err', f).textContent = r; } else { f.classList.remove('is-bad'); $('.err', f).textContent = ''; }
+    });
+    if (!ok) { const bad = $('#bForm .is-bad input'); if (bad) bad.focus(); }
+    return ok;
+  },
+  async submit() {
+    if (!this.check() || this.sending) return;
+    if ($('#bHoney').value) return;
+    const ref = 'TB-R' + Array.from(crypto.getRandomValues(new Uint8Array(4))).map(x => '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'[x & 31]).join('');
+    const first = $('#bFirst').value.trim(), name = `${first} ${$('#bLast').value.trim()}`, email = $('#bEmail').value.trim(), phone = $('#bPhone').value.trim(), notes = $('#bNotes').value.trim();
+    const guests = `${B.guests} ${B.guests === 1 ? 'guest' : 'guests'}`;
+    const err = $('#bSendErr'), btn = $('#bNext'), label = btn.innerHTML;
+    err.hidden = true; this.sending = true; btn.disabled = true; btn.innerHTML = '<span class="paying"><span class="spin"></span>Sending</span>';
+    // inside the Claude preview the page cannot reach other websites, so nothing is sent there
+    const preview = !!(window.claude && typeof window.claude.use === 'function');
+    let ok = preview;
+    if (!preview) {
+      try {
+        const res = await fetch(SITE.bookingEndpoint, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            _subject: `Table request: ${name}, ${guests}, ${fmtDay(B.date)} at ${B.time}`,
+            _template: 'table', _captcha: 'false',
+            _autoresponse: `Thank you, ${first}. We have received your request for a table for ${B.guests} on ${fmtLong(B.date)} at ${B.time} (reference ${ref}). Our team will confirm it by email or phone shortly. Terrarium Bistro, ${SITE.addressLine} · ${SITE.phone}`,
+            Reference: ref, Name: name, email, Phone: phone, Guests: String(B.guests), Date: fmtLong(B.date), Time: B.time, Occasion: B.occ, Requests: notes || 'None', 'Newsletter opt-in': $('#bNews').checked ? 'Yes' : 'No'
+          })
+        });
+        const out = await res.json().catch(() => ({}));
+        ok = res.ok && String(out.success) === 'true';
+      } catch (e) { ok = false; }
+    }
+    this.sending = false; btn.disabled = false; btn.innerHTML = label;
+    if (!ok) { err.innerHTML = `We could not send your request just now. Please try again, or call us on <a href="tel:${SITE.phoneIntl}">${esc(SITE.phone)}</a>.`; err.hidden = false; return; }
+    $('#bPreviewNote').hidden = !preview;
+    $('#bDoneText').textContent = `Thank you, ${first}. We have your request for ${B.guests} on ${fmtLong(B.date)} at ${B.time}. Our team will confirm it by email or phone shortly.`;
+    const rows = [['Name', name], ['Guests', B.guests], ['Date', fmtLong(B.date)], ['Time', B.time], ['Occasion', B.occ], ['Reference', `<span class="ref">${ref}</span>`]];
+    $('#bDoneList').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${k === 'Reference' ? v : esc(v)}</dd>`).join('');
+    const [hh, mm] = B.time.split(':').map(Number);
+    const st = `${ymd(B.date).replace(/-/g, '')}T${String(hh).padStart(2, '0')}${String(mm).padStart(2, '0')}00`;
+    const endH = hh + 2, en = `${ymd(B.date).replace(/-/g, '')}T${String(endH).padStart(2, '0')}${String(mm).padStart(2, '0')}00`;
+    $('#bCal').href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Table at Terrarium Bistro')}&dates=${st}/${en}&ctz=Europe/London&details=${encodeURIComponent(`Table for ${B.guests}. Reference ${ref}.`)}&location=${encodeURIComponent('Terrarium Bistro, ' + SITE.addressLine)}`;
+    B.step = 4;
+    $$('#bookCard .panel').forEach(p => p.classList.toggle('is-on', +p.dataset.panel === 4));
+    $('#bTicket').hidden = true; $$('#bSteps button').forEach(b => { b.classList.remove('is-on'); b.classList.add('is-done'); b.disabled = true; });
+    const d = $('#bDone'); d.classList.remove('is-on'); void d.offsetWidth; d.classList.add('is-on');
+    const top = $('#bookCard').getBoundingClientRect().top; if (top < 60) scrollToY(scrollY + top - 100);
+  },
+  reset() {
+    Object.assign(B, { step: 0, guests: null, date: null, time: null, occ: 'None' });
+    $$('#bGuests .chip').forEach(c => { c.classList.remove('is-on'); c.setAttribute('aria-pressed', 'false'); }); $('#bLarge').hidden = true;
+    $('#bForm').reset(); $$('#bOcc button').forEach((b, i) => { b.classList.toggle('is-on', !i); b.setAttribute('aria-pressed', !i); });
+    $('#bTicket').hidden = false; $('#bDone').classList.remove('is-on'); $('#bSendErr').hidden = true;
+    this.goStep(0); this.cal(); this.slots();
+  }
+};
+
+/* =====================================================================
    VOUCHER: renderer (seeded gold glitter) + builder
    ===================================================================== */
 const DISPLAY = '"Cormorant Garamond", Garamond, "Times New Roman", serif', BODYF = 'Manrope, "Helvetica Neue", Arial, sans-serif';
@@ -2503,7 +2702,7 @@ function loop(t) {
 }
 
 /* ---------------------------------------------------------- boot */
-bindCfg(); buildDoors(); Hero.build(); Voucher.init(); Cursor.init(); magnetic(); Dust.init();
+bindCfg(); buildDoors(); Hero.build(); Book.init(); Voucher.init(); Cursor.init(); magnetic(); Dust.init();
 let first = (location.hash || '#home').slice(1); if (!PAGES.includes(first)) first = 'home';
 activate(first); layout();
 requestAnimationFrame(loop);
