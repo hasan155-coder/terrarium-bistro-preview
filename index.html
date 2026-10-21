@@ -334,6 +334,51 @@ em,.it{font-style:italic}
 .closing{text-align:left;display:flex;flex-direction:column;gap:2rem;align-items:flex-start;padding-block:clamp(5rem,10vw,9rem)}
 .closing .d-xl{max-width:12ch}
 
+/* ---------- MENU BOOK ---------- */
+.mb-chapters{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-bottom:1.8rem}
+.mb-chapters button{padding:.62rem 1rem;border:1px solid var(--line-2);border-radius:999px;font:500 .66rem/1 var(--f-b);letter-spacing:.14em;text-transform:uppercase;color:var(--cream-2);transition:all .4s var(--ease);white-space:nowrap}
+.mb-chapters button:hover{border-color:var(--line)}
+.mb-chapters button.is-on{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.mb-stage{position:relative;perspective:2600px;padding-block:.6rem 2.6rem;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.mb-book{position:relative;width:min(100%,1180px,calc((100svh - 250px) * 1.414));min-width:0;margin-inline:auto;aspect-ratio:1588/1123;transform:translateX(var(--shift,0%));transition:transform .95s var(--ease-io);transform-style:preserve-3d}
+.mb-book.is-single{width:min(100%,520px,calc((100svh - 230px) * .707));aspect-ratio:794/1123}
+.mb-book::before{content:"";position:absolute;left:6%;right:6%;bottom:-30px;height:44px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.7),transparent 70%);filter:blur(8px);z-index:-1}
+.mb-l,.mb-r{position:absolute;top:0;bottom:0;width:50%;overflow:hidden;background:#0E1F17;box-shadow:0 30px 60px -32px rgba(0,0,0,.95)}
+.mb-l{left:0}.mb-r{right:0}
+.is-single .mb-r{width:100%}.is-single .mb-l{display:none}
+.mb-l.is-empty,.mb-r.is-empty{background:transparent;box-shadow:none}
+.mb-l img,.mb-r img{width:100%;height:100%;display:block;object-fit:cover;cursor:zoom-in;-webkit-user-drag:none}
+.mb-l::after,.mb-r::after{content:"";position:absolute;top:0;bottom:0;width:11%;pointer-events:none}
+.mb-l::after{right:0;background:linear-gradient(90deg,transparent,rgba(0,0,0,.3))}
+.mb-r::after{left:0;background:linear-gradient(270deg,transparent,rgba(0,0,0,.3))}
+.is-single .mb-r::after{width:3%}
+.mb-l.is-empty::after,.mb-r.is-empty::after{display:none}
+.mb-leaf{position:absolute;top:0;bottom:0;width:50%;transform-style:preserve-3d;z-index:5;pointer-events:none}
+.mb-leaf--r{right:0;transform-origin:left center}
+.mb-leaf--l{left:0;transform-origin:right center}
+.is-single .mb-leaf--r{width:100%}
+.mb-face{position:absolute;inset:0;overflow:hidden;background:#0E1F17;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.mb-face img{width:100%;height:100%;display:block}
+.mb-back{transform:rotateY(180deg)}
+.mb-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,0) 65%);opacity:0;pointer-events:none}
+.mb-ctrl{display:flex;justify-content:center;align-items:center;gap:1.4rem}
+.mb-count{font:500 .72rem/1 var(--f-b);letter-spacing:.2em;text-transform:uppercase;color:var(--cream-2);min-width:13em;text-align:center;font-variant-numeric:tabular-nums}
+.circ:disabled{opacity:.28;pointer-events:none}
+.mb-foot{display:flex;justify-content:space-between;align-items:center;gap:1.4rem;flex-wrap:wrap;margin-top:2.4rem;padding-top:1.6rem;border-top:1px solid var(--line-2)}
+.mb-hint{margin:0;color:var(--mute);font-size:.86rem}
+.mb-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.mb-allergy{margin:1.2rem 0 0;color:var(--mute);font-size:.8rem}
+.lb.is-zoomable .lb-fig img{cursor:zoom-in}
+.lb.is-zoom .lb-fig{display:block;overflow:auto;-webkit-overflow-scrolling:touch}
+.lb.is-zoom .lb-fig img{max-height:none;width:min(1100px,max(100%,190vw));max-width:none;margin-inline:auto;cursor:zoom-out}
+@media (max-width:560px){
+  .mb-chapters{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scrollbar-width:none;margin-inline:calc(var(--gl) * -1);padding-inline:var(--gl)}
+  .mb-chapters::-webkit-scrollbar{display:none}
+  .mb-chapters button{flex:none}
+  .mb-actions,.mb-actions .btn{width:100%}
+  .mb-count{min-width:9em}
+}
+
 /* ---------- GALLERY ---------- */
 .ghero{position:relative;min-height:max(680px,min(100svh,980px));padding-top:calc(var(--hdr) + 2rem);padding-bottom:2rem;display:flex;flex-direction:column;overflow:hidden;isolation:isolate}
 .g-amb{position:absolute;inset:-10%;z-index:-2}
@@ -801,6 +846,7 @@ em,.it{font-style:italic}
   </a>
   <nav class="nav" aria-label="Main">
     <a href="#about" data-link data-nav="about">About</a>
+    <a href="#menu" data-link data-nav="menu">Menu</a>
     <a href="#gallery" data-link data-nav="gallery">Gallery</a>
     <a href="#vouchers" data-link data-nav="vouchers">Gift vouchers</a>
     <a href="#contact" data-link data-nav="contact">Contact</a>
@@ -814,10 +860,11 @@ em,.it{font-style:italic}
   <nav aria-label="Mobile">
     <a href="#home" data-link data-nav="home"><small>I</small>Home</a>
     <a href="#about" data-link data-nav="about"><small>II</small>About</a>
-    <a href="#gallery" data-link data-nav="gallery"><small>III</small>Gallery</a>
-    <a href="#vouchers" data-link data-nav="vouchers"><small>IV</small>Gift vouchers</a>
-    <a href="#book" data-link data-nav="book"><small>V</small>Book a table</a>
-    <a href="#contact" data-link data-nav="contact"><small>VI</small>Contact</a>
+    <a href="#menu" data-link data-nav="menu"><small>III</small>Menu</a>
+    <a href="#gallery" data-link data-nav="gallery"><small>IV</small>Gallery</a>
+    <a href="#vouchers" data-link data-nav="vouchers"><small>V</small>Gift vouchers</a>
+    <a href="#book" data-link data-nav="book"><small>VI</small>Book a table</a>
+    <a href="#contact" data-link data-nav="contact"><small>VII</small>Contact</a>
   </nav>
   <div class="mmenu-foot"><span data-cfg="phone"></span><span data-cfg="email"></span><span>Tarporley, Cheshire</span></div>
 </div>
@@ -847,7 +894,7 @@ em,.it{font-style:italic}
     </div>
     <div class="wrap hero-foot">
       <p data-r="up" style="--rd:.35s">Thoughtful food. Beautiful company.<br>An evening, made memorable.</p>
-      <a class="btn" href="#dishes" data-scrollto="#dishes" data-r="up" style="--rd:.5s" data-magnetic>Explore the menu <svg class="arr"><use href="#arr"/></svg></a>
+      <a class="btn" href="#menu" data-link data-r="up" style="--rd:.5s" data-magnetic>Explore the menu <svg class="arr"><use href="#arr"/></svg></a>
       <div class="hero-scroll" data-r="fade" style="--rd:.7s"><span class="eyebrow">Scroll to savour</span><span class="hero-count" id="hCount">01 / 06</span><span class="scroll-cue"></span></div>
     </div>
   </div>
@@ -875,7 +922,7 @@ em,.it{font-style:italic}
           <div class="sec-label" data-r="fade"><span class="numeral">III.</span><span class="eyebrow">From the kitchen</span></div>
           <h2 class="d-lg" data-r="words">A menu with a <em class="gold">passport.</em></h2>
         </div>
-        <div class="dishes-aside"><p class="lead" data-r="up">Ottoman, Spanish, Italian and British plates, cooked for sharing and lingering over.</p><div class="dishes-prog" aria-hidden="true"><i id="dishesProg"></i></div></div>
+        <div class="dishes-aside"><p class="lead" data-r="up">Ottoman, Spanish, Italian and British plates, cooked for sharing and lingering over.</p><a class="link-line" href="#menu" data-link data-r="fade">Open the menu book</a><div class="dishes-prog" aria-hidden="true"><i id="dishesProg"></i></div></div>
       </div>
       <div class="dishes-track" id="dishesTrack">
         <article class="dish"><div class="dish-img"><img src="img/lamb-dark.jpg" alt="Ottoman lamb shank on mash" loading="lazy"></div><span class="eyebrow">Main</span><h3>Ottoman Lamb Shank</h3><p>Slow-cooked lamb shank with mash.</p></article>
@@ -887,7 +934,7 @@ em,.it{font-style:italic}
         <article class="dish"><div class="dish-img"><img src="img/padron.jpg" alt="Blistered padron peppers" loading="lazy"></div><span class="eyebrow">Tapas</span><h3>Padron Peppers</h3><p>Blistered peppers with sea salt.</p></article>
         <article class="dish"><div class="dish-img"><img src="img/creamy-mushrooms.jpg" alt="Creamy mushrooms on toast" loading="lazy" style="object-position:62% 50%"></div><span class="eyebrow">Tapas</span><h3>Creamy Mushrooms</h3><p>Creamy mushrooms on toasted bread.</p></article>
         <article class="dish"><div class="dish-img"><img src="img/benedict.jpg" alt="Eggs Benedict" loading="lazy" style="object-position:45% 50%"></div><span class="eyebrow">Breakfast</span><h3>Terrarium Benedict</h3><p>Our house take on eggs Benedict.</p></article>
-        <div class="dish dish--end"><span class="eyebrow">Hungry yet?</span><h3>Your table is one tap away.</h3><a class="btn btn--solid" href="#book" data-link>Book your table</a></div>
+        <div class="dish dish--end"><span class="eyebrow">Hungry yet?</span><h3>Your table is one tap away.</h3><a class="btn btn--solid" href="#book" data-link>Book your table</a><a class="link-line" href="#menu" data-link>See the full menu</a></div>
       </div>
     </div>
   </section>
@@ -1080,6 +1127,35 @@ em,.it{font-style:italic}
     <span class="eyebrow" data-r="fade">Tarporley, Cheshire</span>
     <p class="d-xl" data-r="words">Come and see it for <em class="shimmer">yourself.</em></p>
     <div style="display:flex;gap:.8rem;flex-wrap:wrap" data-r="up"><a class="btn btn--solid" href="#book" data-link>Book your table <svg class="arr"><use href="#arr"/></svg></a><a class="btn" href="#gallery" data-link>See the gallery</a></div>
+  </section>
+</section>
+
+<!-- ================================================= MENU -->
+<section class="page" data-page="menu" aria-label="Menu">
+  <div class="phero wrap" style="padding-bottom:clamp(1.5rem,3vw,2.5rem)">
+    <div class="phero-grid">
+      <div class="phero-copy">
+        <div class="crumb" data-r="fade"><span class="numeral">I.</span><span class="eyebrow">The menu</span></div>
+        <h1 class="d-xl" data-r="words">Turn the <em class="shimmer">pages.</em></h1>
+      </div>
+      <p class="lead" data-r="up" style="--rd:.3s">Breakfast, tapas, dinner and Sunday lunch, plus our festive menu from 30 November to 24 December.</p>
+    </div>
+  </div>
+  <section class="wrap" style="padding-bottom:clamp(5rem,10vw,8rem)" aria-label="Menu book">
+    <div class="mb-chapters" id="mbChapters" role="group" aria-label="Jump to a section" data-r="fade"></div>
+    <div class="mb-stage" id="mbStage" data-r="up" data-cursor="Read">
+      <div class="mb-book" id="mbBook"><div class="mb-l"></div><div class="mb-r"></div></div>
+    </div>
+    <div class="mb-ctrl">
+      <button class="circ" id="mbPrev" type="button" aria-label="Previous page" data-magnetic><svg style="transform:scaleX(-1)"><use href="#arr"/></svg></button>
+      <span class="mb-count" id="mbCount" aria-live="polite">Page 1 of 14</span>
+      <button class="circ" id="mbNext" type="button" aria-label="Next page" data-magnetic><svg><use href="#arr"/></svg></button>
+    </div>
+    <div class="mb-foot">
+      <p class="mb-hint">Swipe or use the arrows to turn the page. Tap a page to read it full size.</p>
+      <div class="mb-actions"><a class="btn" id="mbPdf" href="menu/Terrarium-Bistro-Menu.pdf" download>Download the menu (PDF)</a><a class="btn btn--solid" href="#book" data-link>Book your table <svg class="arr"><use href="#arr"/></svg></a></div>
+    </div>
+    <p class="mb-allergy">Please tell our team about any allergies or dietary requirements before you order.</p>
   </section>
 </section>
 
@@ -1288,7 +1364,7 @@ em,.it{font-style:italic}
     <div><h4>Visit</h4><p>Terrarium Bistro</p><p data-cfg="addressLine"></p></div>
     <div><h4>Talk</h4><a data-cfg-href="tel" data-cfg="phone" href="#"></a><a data-cfg-href="mailto" data-cfg="email" href="#"></a><a data-cfg-href="whatsappUrl" href="#" target="_blank" rel="noopener">WhatsApp</a></div>
     <div><h4>Follow</h4><a data-cfg-href="instagramUrl" href="#" target="_blank" rel="noopener">Instagram</a><a data-cfg-href="facebookUrl" href="#" target="_blank" rel="noopener">Facebook</a><a data-cfg-href="googleReviewsUrl" href="#" target="_blank" rel="noopener">Google reviews</a><a data-cfg-href="tripadvisorUrl" href="#" target="_blank" rel="noopener">Tripadvisor</a></div>
-    <div><h4>Explore</h4><a href="#about" data-link>Our story</a><a href="#gallery" data-link>Gallery</a><a href="#vouchers" data-link>Gift vouchers</a><a href="#book" data-link>Book a table</a><a href="#contact" data-link>Contact</a></div>
+    <div><h4>Explore</h4><a href="#about" data-link>Our story</a><a href="#menu" data-link>Menu</a><a href="#gallery" data-link>Gallery</a><a href="#vouchers" data-link>Gift vouchers</a><a href="#book" data-link>Book a table</a><a href="#contact" data-link>Contact</a></div>
   </div>
   <div class="ftr-word" id="ftrWord" aria-hidden="true"><span class="o">Terrarium</span><span class="f">Terrarium</span></div>
   <div class="wrap ftr-base"><span>© 2026 Terrarium Bistro &middot; Tarporley, Cheshire</span><button type="button" id="toTop">Back to top <span aria-hidden="true">↑</span></button></div>
@@ -1537,9 +1613,9 @@ function magnetic() {
 }
 
 /* ---------------------------------------------------------- router + curtain */
-const PAGES = ['home', 'about', 'gallery', 'book', 'vouchers', 'contact'];
-const LABELS = { home: 'Welcome', about: 'Our story', gallery: 'The gallery', book: 'Reservations', vouchers: 'Gift vouchers', contact: 'Contact' };
-const TITLES = { home: 'Terrarium Bistro', about: 'About · Terrarium Bistro', gallery: 'Gallery · Terrarium Bistro', book: 'Book a table · Terrarium Bistro', vouchers: 'Gift vouchers · Terrarium Bistro', contact: 'Contact · Terrarium Bistro' };
+const PAGES = ['home', 'about', 'menu', 'gallery', 'book', 'vouchers', 'contact'];
+const LABELS = { home: 'Welcome', about: 'Our story', menu: 'The menu', gallery: 'The gallery', book: 'Reservations', vouchers: 'Gift vouchers', contact: 'Contact' };
+const TITLES = { home: 'Terrarium Bistro', about: 'About · Terrarium Bistro', menu: 'Menu · Terrarium Bistro', gallery: 'Gallery · Terrarium Bistro', book: 'Book a table · Terrarium Bistro', vouchers: 'Gift vouchers · Terrarium Bistro', contact: 'Contact · Terrarium Bistro' };
 const Router = { cur: null, busy: false };
 const hooks = { enter: {}, leave: {} };
 const pageEl = n => $(`.page[data-page="${n}"]`);
@@ -1941,6 +2017,7 @@ hooks.leave.gallery = () => galOf('gallery').stop();
 addEventListener('keydown', e => {
   if (LB.open_ && (e.key === 'Escape')) { LB.close(); return; }
   if (LB.open_) { if (e.key === 'ArrowRight') LB.step(1); if (e.key === 'ArrowLeft') LB.step(-1); return; }
+  if (Router.cur === 'menu' && !e.target.closest('input, textarea')) { if (e.key === 'ArrowRight') MenuBook.turn(1); if (e.key === 'ArrowLeft') MenuBook.turn(-1); }
   if (Router.cur === 'gallery' && !e.target.closest('input, textarea')) { const g = galOf('gallery'); if (e.key === 'ArrowRight') g.go(g.i + 1, 1); if (e.key === 'ArrowLeft') g.go(g.i - 1, -1); }
   if (e.key === 'Escape' && root.classList.contains('menu-open')) setMenu(false);
 });
@@ -1955,15 +2032,18 @@ const LB = {
   step(d) { this.i = (this.i + d + this.list.length) % this.list.length; this.render(); },
   render(first) {
     const g = this.list[this.i], img = $('#lbImg');
-    const set = () => { img.src = `img/${g.img}.jpg`; img.alt = g.t; $('#lbTitle').textContent = g.t; $('#lbCat').textContent = CATS[g.c]; $('#lbCount').textContent = `${String(this.i + 1).padStart(2, '0')} / ${String(this.list.length).padStart(2, '0')}`; img.classList.remove('is-swap'); };
+    const set = () => { img.src = g.src || `img/${g.img}.jpg`; img.alt = g.t; $('#lbTitle').textContent = g.t; $('#lbCat').textContent = g.cat || CATS[g.c]; this.el.classList.toggle('is-zoomable', !!g.zoom); this.el.classList.remove('is-zoom'); $('.lb-fig', this.el).scrollTo(0, 0); $('#lbCount').textContent = `${String(this.i + 1).padStart(2, '0')} / ${String(this.list.length).padStart(2, '0')}`; img.classList.remove('is-swap'); };
     if (first || RM) set(); else { img.classList.add('is-swap'); setTimeout(set, 260); }
   }
 };
 $('#lbClose').addEventListener('click', () => LB.close());
 $('#lbPrev').addEventListener('click', () => LB.step(-1));
 $('#lbNext').addEventListener('click', () => LB.step(1));
-LB.el.addEventListener('click', e => { if (e.target === LB.el || e.target.classList.contains('lb-fig')) LB.close(); });
-(() => { let sx = null; LB.el.addEventListener('pointerdown', e => sx = e.clientX); LB.el.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) LB.step(dx < 0 ? 1 : -1); }); })();
+LB.el.addEventListener('click', e => {
+  if (e.target.id === 'lbImg' && LB.el.classList.contains('is-zoomable')) { LB.el.classList.toggle('is-zoom'); return; }
+  if (e.target === LB.el || e.target.classList.contains('lb-fig')) LB.close();
+});
+(() => { let sx = null; LB.el.addEventListener('pointerdown', e => sx = e.clientX); LB.el.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (LB.el.classList.contains('is-zoom')) return; if (Math.abs(dx) > 50) LB.step(dx < 0 ? 1 : -1); }); })();
 
 /* =====================================================================
    VOUCHER: renderer (seeded gold glitter) + builder
@@ -2297,9 +2377,114 @@ revealHooks.push(el => {
   if (el.classList.contains('door') && !FINE && !RM) { const d = parseFloat(el.style.getPropertyValue('--rd')) || 0; setTimeout(() => { el.classList.add('is-play'); setTimeout(() => el.classList.remove('is-play'), 2400); }, 700 + d * 1000); }
 });
 
+/* =====================================================================
+   MENU BOOK (page-turning)
+   ===================================================================== */
+const MENU = {
+  count: 14, pdf: 'menu/Terrarium-Bistro-Menu.pdf',
+  chapters: [['Cover', 1], ['Our story', 2], ['Breakfast', 3], ['Tapas', 5], ['Mains', 7], ['Pasta & sides', 9], ['Desserts', 10], ['Sunday lunch', 11], ['Christmas', 12], ['Find us', 14]],
+  titles: ['Cover', 'Our story', 'Slow mornings', 'Breakfast & brunch', 'Made to share', 'Tapas & sharing', 'From field to fire', 'Mains & steaks', 'Pasta, salads & sides', 'Desserts & little ones', 'Sunday lunch', 'Merry Christmas', 'Festive menu', 'Stay in touch']
+};
+const pageSrc = n => `menu/page-${String(n).padStart(2, '0')}.jpg`;
+const MenuBook = {
+  el: $('#mbBook'), stage: $('#mbStage'), mode: null, pos: 0, busy: false,
+  init() {
+    this.L = $('.mb-l', this.el); this.R = $('.mb-r', this.el);
+    $('#mbChapters').innerHTML = MENU.chapters.map(([t, n]) => `<button type="button" data-p="${n}">${esc(t)}</button>`).join('');
+    $('#mbChapters').addEventListener('click', e => { const b = e.target.closest('button'); if (b) this.jump(+b.dataset.p); });
+    $('#mbPrev').addEventListener('click', () => this.turn(-1));
+    $('#mbNext').addEventListener('click', () => this.turn(1));
+    let sx = null, sy = null;
+    this.stage.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
+    this.stage.addEventListener('pointerup', e => {
+      if (sx === null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) { this.turn(dx < 0 ? 1 : -1); return; }
+      const pg = e.target.closest('[data-page-n]'); if (pg && !this.busy) this.read(+pg.dataset.pageN);
+    });
+    $('#mbPdf').addEventListener('click', e => this.download(e));
+    this.layout(true);
+  },
+  spreads() { const s = [[null, 1]]; for (let n = 2; n <= MENU.count; n += 2) s.push([n, n + 1 <= MENU.count ? n + 1 : null]); return s; },
+  spreadIndexOf(n) { return n <= 1 ? 0 : Math.floor(n / 2); },
+  currentPages() { if (!this.mode) return [1]; if (this.mode === 'single') return [this.pos + 1]; return this.spreads()[this.pos].filter(Boolean); },
+  max() { return this.mode === 'spread' ? this.spreads().length - 1 : MENU.count - 1; },
+  layout(force) {
+    const m = innerWidth >= 900 ? 'spread' : 'single';
+    if (m === this.mode && !force) return;
+    const cur = this.currentPages()[0] || 1;
+    this.mode = m; this.el.classList.toggle('is-single', m === 'single');
+    this.pos = m === 'spread' ? this.spreadIndexOf(cur) : cur - 1;
+    this.render();
+  },
+  setImg(slot, n) {
+    slot.innerHTML = n ? `<img src="${pageSrc(n)}" alt="Menu page ${n}: ${esc(MENU.titles[n - 1])}" data-page-n="${n}" draggable="false">` : '';
+    slot.classList.toggle('is-empty', !n);
+  },
+  shiftFor(l, r) { return l === null ? '-25%' : r === null ? '25%' : '0%'; },
+  render() {
+    if (this.mode === 'spread') { const [l, r] = this.spreads()[this.pos]; this.setImg(this.L, l); this.setImg(this.R, r); this.el.style.setProperty('--shift', this.shiftFor(l, r)); }
+    else { this.setImg(this.R, this.pos + 1); this.setImg(this.L, null); this.el.style.setProperty('--shift', '0%'); }
+    this.status(); this.preload();
+  },
+  status() {
+    const p = this.currentPages(), last = p[p.length - 1];
+    $('#mbCount').textContent = p.length > 1 ? `Pages ${p[0]}–${last} of ${MENU.count}` : `Page ${p[0]} of ${MENU.count}`;
+    $('#mbPrev').disabled = this.pos === 0; $('#mbNext').disabled = this.pos === this.max();
+    let on = null; MENU.chapters.forEach(([, n]) => { if (n <= last) on = n; });
+    $$('#mbChapters button').forEach(b => { const a = +b.dataset.p === on; b.classList.toggle('is-on', a); b.setAttribute('aria-pressed', a); });
+    const strip = $('#mbChapters'), act = $('.is-on', strip);
+    if (act && strip.scrollWidth > strip.clientWidth) { const ar = act.getBoundingClientRect(), cr = strip.getBoundingClientRect(); if (ar.left < cr.left || ar.right > cr.right) strip.scrollTo({ left: strip.scrollLeft + ar.left - cr.left - 16, behavior: RM ? 'auto' : 'smooth' }); }
+  },
+  preload() { const p = this.currentPages(); [p[0] - 2, p[0] - 1, p[p.length - 1] + 1, p[p.length - 1] + 2].forEach(n => { if (n >= 1 && n <= MENU.count) { const i = new Image(); i.src = pageSrc(n); } }); },
+  leaf(front, back, side) {
+    const lf = document.createElement('div'); lf.className = 'mb-leaf mb-leaf--' + side;
+    lf.innerHTML = `<div class="mb-face mb-front">${front ? `<img src="${pageSrc(front)}" alt="">` : ''}<i class="mb-shade"></i></div><div class="mb-face mb-back">${back ? `<img src="${pageSrc(back)}" alt="">` : ''}<i class="mb-shade"></i></div>`;
+    this.el.appendChild(lf); return lf;
+  },
+  turn(d) {
+    if (this.busy) return; const to = this.pos + d; if (to < 0 || to > this.max()) return;
+    if (RM) { this.pos = to; this.render(); return; }
+    this.busy = true;
+    const done = lf => { this.pos = to; this.render(); lf.remove(); this.busy = false; };
+    if (this.mode === 'spread') {
+      const S = this.spreads(), [cl, cr] = S[this.pos], [nl, nr] = S[to]; let lf, a;
+      if (d > 0) { this.setImg(this.R, nr); lf = this.leaf(cr, nl, 'r'); a = lf.animate([{ transform: 'rotateY(0deg)' }, { transform: 'rotateY(-180deg)' }], { duration: 1050, easing: 'cubic-bezier(.45,.05,.25,1)', fill: 'forwards' }); }
+      else { this.setImg(this.L, nl); lf = this.leaf(cl, nr, 'l'); a = lf.animate([{ transform: 'rotateY(0deg)' }, { transform: 'rotateY(180deg)' }], { duration: 1050, easing: 'cubic-bezier(.45,.05,.25,1)', fill: 'forwards' }); }
+      $$('.mb-shade', lf).forEach(sh => sh.animate([{ opacity: 0 }, { opacity: .55, offset: .5 }, { opacity: 0 }], { duration: 1050 }));
+      this.el.style.setProperty('--shift', this.shiftFor(nl, nr));
+      a.onfinish = () => done(lf);
+    } else {
+      let lf, a;
+      if (d > 0) { this.setImg(this.R, to + 1); lf = this.leaf(this.pos + 1, null, 'r'); a = lf.animate([{ transform: 'rotateY(0deg)', opacity: 1 }, { transform: 'rotateY(-100deg)', opacity: .15 }], { duration: 750, easing: 'cubic-bezier(.55,.05,.35,1)', fill: 'forwards' }); }
+      else { lf = this.leaf(to + 1, null, 'r'); a = lf.animate([{ transform: 'rotateY(-100deg)', opacity: .15 }, { transform: 'rotateY(0deg)', opacity: 1 }], { duration: 750, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'forwards' }); }
+      a.onfinish = () => done(lf);
+    }
+  },
+  jump(n) {
+    if (this.busy) return; const to = this.mode === 'spread' ? this.spreadIndexOf(n) : n - 1; if (to === this.pos) return;
+    if (!RM && Math.abs(to - this.pos) === 1) { this.turn(to - this.pos); return; }
+    this.busy = true;
+    this.el.animate([{ opacity: 1, filter: 'blur(0)' }, { opacity: 0, filter: 'blur(6px)' }], { duration: RM ? 1 : 240, fill: 'forwards' }).onfinish = () => {
+      this.pos = to; this.render();
+      this.el.animate([{ opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0)' }], { duration: RM ? 1 : 420, fill: 'forwards' }).onfinish = () => { this.busy = false; };
+    };
+  },
+  read(n) { LB.open(n - 1, Array.from({ length: MENU.count }, (_, i) => ({ src: pageSrc(i + 1), t: MENU.titles[i], cat: 'Menu · tap the page to zoom', zoom: true }))); },
+  async download(e) {
+    if (!(window.claude && typeof window.claude.use === 'function')) return; // a normal website downloads through the link
+    e.preventDefault();
+    let dl = null; try { dl = await window.claude.use('downloads'); } catch (_) {}
+    if (!dl) { toast('Downloading is not available in this preview'); return; }
+    try { const blob = await (await fetch(MENU.pdf)).blob(); await dl.save({ filename: 'Terrarium-Bistro-Menu.pdf', data: blob }); toast('Menu saved'); }
+    catch (err) { if (!err || err.code !== 'declined') toast('Downloading is not available here'); }
+  }
+};
+MenuBook.init();
+
 /* ---------------------------------------------------------- layout + loop */
 function layout() {
   Dishes.layout();
+  MenuBook.layout();
   if (Dust.on) Dust.size();
   runFx(true);
 }
