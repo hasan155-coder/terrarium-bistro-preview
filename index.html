@@ -1314,10 +1314,10 @@ em,.it{font-style:italic}
    Everything on the site (contact doors, footer, emails) reads from here.
    ===================================================================== */
 const SITE = {
-  phone: '01829 000 000',                       // PLACEHOLDER
-  phoneIntl: '+441829000000',                   // PLACEHOLDER
+  phone: '01829 863469',
+  phoneIntl: '+441829863469',
   email: 'info@terrariumbistro.co.uk',
-  whatsapp: '441829000000',                     // PLACEHOLDER (country code, no +)
+  whatsapp: '441829863469',                     // works only if this number is registered on WhatsApp Business
   addressLine: '44 High St, Tarporley CW6 0DX',
   website: 'www.terrariumbistro.co.uk',
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Terrarium%20Bistro%2C%2044%20High%20St%2C%20Tarporley%20CW6%200DX',
@@ -1327,7 +1327,7 @@ const SITE = {
   instagramHandle: '@terrariumbistro.tarporley',
   facebookUrl: 'https://www.facebook.com/share/1hcMNJX32f/',
   bookingUrl: 'https://tableagent.com/cheshire/terrarium-bistro/table-search/',  // TableAgent live booking page
-  hours: [],   // e.g. [['Tuesday to Saturday','9am to 10pm'],['Sunday','10am to 6pm']]
+  hours: [['Monday', '10:00 – 22:00'], ['Tuesday', 'Closed'], ['Wednesday to Sunday', '10:00 – 22:00']],   // e.g. [['Tuesday to Saturday','9am to 10pm'],['Sunday','10am to 6pm']]
   booking: {
     maxOnline: 8,
     daysAhead: 120,
