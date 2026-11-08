@@ -1,3 +1,4 @@
-# Terrarium Bistro: website preview
+# Terrarium Bistro
 
-Private client preview, not the live site. Photos are temporary samples and contact details are placeholders.
+Website for Terrarium Bistro, 44 High St, Tarporley CW6 0DX.
+Live at https://www.terrariumbistro.co.uk
