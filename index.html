@@ -593,6 +593,10 @@ em,.it{font-style:italic}
 .sum{display:grid;gap:.7rem;margin:0 0 1.6rem}
 .sum div{display:flex;justify-content:space-between;gap:1rem;font-size:.95rem;color:var(--cream-2)}
 .sum div b{color:var(--cream);font-weight:500;text-align:right}
+.vbuy{display:grid;gap:.7rem}
+.vbuy .btn{width:100%}
+.vbuy-note{margin:1.1rem 0 0;font-size:.85rem;line-height:1.6;color:var(--cream-2)}
+.vbuy-note a{color:var(--gold);border-bottom:1px solid rgba(201,166,107,.4)}
 .sum .tot{border-top:1px solid var(--line);padding-top:.9rem;font-size:1rem}
 .sum .tot b{font:400 1.8rem/1 var(--f-d);color:var(--gold-hi)}
 .paying{display:inline-flex;align-items:center;gap:.8rem}
@@ -1101,7 +1105,7 @@ em,.it{font-style:italic}
     <div class="vteaser-copy">
       <div class="sec-label" data-r="fade"><span class="numeral">V.</span><span class="eyebrow">Gift vouchers</span></div>
       <h2 class="d-lg" data-r="words">The gift of an <em class="shimmer">evening.</em></h2>
-      <p class="body" data-r="up">Every Terrarium voucher carries its own serial number and its own pattern of gold, generated from that number. Choose a value, add a message and send it by email in minutes.</p>
+      <p class="body" data-r="up">Choose a value, add a message and watch the gold card come to life. Then call us or ask at the bar, and we will take payment and have it ready for them.</p>
       <div data-r="up"><a class="btn btn--solid" href="#vouchers" data-link data-magnetic>Create a voucher <svg class="arr"><use href="#arr"/></svg></a></div>
     </div>
     <div class="vstage" id="teaserStage" data-r="scale">
@@ -1429,7 +1433,7 @@ em,.it{font-style:italic}
     <div class="phero-copy" style="max-width:920px">
       <div class="crumb" data-r="fade"><span class="numeral">I.</span><span class="eyebrow">Gift vouchers</span></div>
       <h1 class="d-xl" data-r="words">Give an <em class="shimmer">evening.</em></h1>
-      <p class="lead" data-r="up" style="--rd:.3s">A gold-flecked Terrarium voucher with its own serial number, sent straight to their inbox or saved to give in person.</p>
+      <p class="lead" data-r="up" style="--rd:.3s">Choose the value and write your message here. Then call us or ask at the bar: we take payment and have the voucher ready for you.</p>
     </div>
   </div>
 
@@ -1451,22 +1455,13 @@ em,.it{font-style:italic}
           </div>
         </div>
         <div class="vstep">
-          <div class="vstep-h"><b>iii.</b><h3>How should it arrive?</h3></div>
-          <div class="opts" id="vDelivery">
-            <button type="button" class="opt is-on" data-del="recipient"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M3 6.5h18v12H3z"/><path d="M3 6.5l9 6.5 9-6.5"/></svg><b>Email it to them</b><small>We send it to their inbox on the day you choose.</small></button>
-            <button type="button" class="opt" data-del="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M4 9h16v11H4zM2.5 6h19v3h-19zM12 6v14M12 6c-2-3.5-6-3.5-6-1s4 1 6 1c2 0 6 1.5 6-1s-4-2.5-6 1z"/></svg><b>Send it to me</b><small>Print it or forward it yourself.</small></button>
-          </div>
-          <div class="fields">
-            <div class="f" id="vREmailWrap"><label for="vREmail">Their email</label><input id="vREmail" type="email" placeholder="name@example.com" autocomplete="off"><span class="err"></span></div>
-            <div class="f" id="vDateWrap"><label for="vDate">Delivery date</label><input id="vDate" type="date"><span class="err"></span></div>
-            <div class="f f--full"><label for="vPEmail">Your email, for the receipt</label><input id="vPEmail" type="email" placeholder="you@example.com" autocomplete="email"><span class="err"></span></div>
-          </div>
-        </div>
-        <div class="vstep">
-          <div class="vstep-h"><b>iv.</b><h3>Review and pay</h3></div>
+          <div class="vstep-h"><b>iii.</b><h3>Buy it from us</h3></div>
           <div class="sum" id="vSum"></div>
-          <button class="btn btn--solid" type="button" id="vPay" style="width:100%">Pay £50 securely</button>
-          <div class="preview-note" data-preview><span>✦</span><span><b>Preview build.</b> No payment is taken and nothing is emailed. At launch this button opens a secure card checkout, and each serial number is saved to a voucher register so staff can check it before redeeming.</span></div>
+          <div class="vbuy">
+            <a class="btn btn--solid" id="vCall" href="tel:+441829863469">Call to buy</a>
+            <a class="btn" id="vOrder" href="mailto:info@terrariumbistro.co.uk">Email us your order</a>
+          </div>
+          <p class="vbuy-note">Call <a id="vPhone" href="tel:+441829863469">01829 863469</a> or ask at the bar next time you are in. We take card payment over the phone or in person. Nothing is charged on this website.</p>
         </div>
       </div>
 
@@ -1500,9 +1495,9 @@ em,.it{font-style:italic}
 
   <section class="wrap" style="padding-bottom:clamp(5rem,10vw,8rem)" aria-label="Voucher terms">
     <div class="terms">
-      <div data-r="up"><h4>One of a kind</h4><p>Each voucher has its own serial number, and its gold pattern is generated from that number, so no two look the same.</p></div>
-      <div data-r="up" style="--rd:.1s"><h4>Valid for 12 months</h4><p>Use it against food and drink at Terrarium Bistro within a year of purchase. Quote the serial number when you book or pay.</p></div>
-      <div data-r="up" style="--rd:.2s"><h4>The small print</h4><p>Vouchers cannot be exchanged for cash. Keep your serial number safe: it is what we check when you redeem.</p></div>
+      <div data-r="up"><h4>How to buy</h4><p>Call us or ask at the bar. We take card payment by phone or in person and have the voucher ready to email or collect.</p></div>
+      <div data-r="up" style="--rd:.1s"><h4>Valid for 12 months</h4><p>Use it against food and drink at Terrarium Bistro within a year of purchase. Quote the voucher number when you book or pay.</p></div>
+      <div data-r="up" style="--rd:.2s"><h4>The small print</h4><p>Vouchers cannot be exchanged for cash. Keep your voucher number safe: it is what we check when you redeem.</p></div>
     </div>
   </section>
 </section>
@@ -1610,7 +1605,7 @@ const SITE = {
     ]
   },
   voucher: { amounts:[25,50,75,100,150,200], min:10, max:500, validityMonths:12 },
-  previewMode: true               // false hides the "Preview build" notes
+  previewMode: false              // false hides the "Preview build" notes
 };
 SITE.whatsappUrl = 'https://wa.me/' + SITE.whatsapp;
 
@@ -2645,7 +2640,7 @@ function drawVoucher(c, d) {
   g.strokeStyle = 'rgba(236,212,156,.2)'; g.beginPath(); g.moveTo(x0, by - 42 * s); g.lineTo(x1, by - 42 * s); g.stroke();
   g.font = `600 ${16 * s}px ${BODYF}`;
   g.fillStyle = d.serial ? '#ecd49c' : 'rgba(236,212,156,.5)';
-  spaced(g, d.serial ? 'Nº  ' + d.serial : (d.teaser ? 'A UNIQUE SERIAL ON EVERY VOUCHER' : 'Nº  ISSUED AT CHECKOUT'), x0, by, 4.2 * s);
+  spaced(g, d.serial ? 'Nº  ' + d.serial : (d.teaser ? 'A UNIQUE SERIAL ON EVERY VOUCHER' : 'Nº  ISSUED WHEN YOU BUY'), x0, by, 4.2 * s);
   g.fillStyle = 'rgba(242,233,215,.62)';
   spaced(g, d.expiry ? 'VALID UNTIL ' + d.expiry.toUpperCase() : `VALID FOR ${SITE.voucher.validityMonths} MONTHS`, x1, by, 4 * s, 'right');
 }
@@ -2696,14 +2691,7 @@ const Voucher = {
       V[k] = e.target.value.trim(); if (k === 'msg') $('#vMsgCount').textContent = `${e.target.value.length} / 120`;
       e.target.closest('.f')?.classList.remove('is-bad'); this.update();
     }));
-    $('#vDelivery').addEventListener('click', e => {
-      const b = e.target.closest('.opt'); if (!b) return; V.del = b.dataset.del;
-      $$('#vDelivery .opt').forEach(o => o.classList.toggle('is-on', o === b));
-      $('#vREmailWrap').hidden = V.del !== 'recipient'; $('#vDateWrap').hidden = V.del !== 'recipient'; this.summary();
-    });
-    const t = today(); $('#vDate').min = ymd(t); $('#vDate').value = ymd(t);
     $$('#vBuilder input').forEach(i => i.addEventListener('input', () => { const f = i.closest('.f'); if (f) { f.classList.remove('is-bad'); const er = $('.err', f); if (er) er.textContent = ''; } this.summary(); }));
-    $('#vPay').addEventListener('click', () => this.pay());
     $('#vAnother').addEventListener('click', () => this.reset());
     $('#vCopy').addEventListener('click', () => copyText(V.serial, 'Serial number'));
     $('#vCopyMail').addEventListener('click', () => copyText(this.mailText(), 'Email text'));
@@ -2719,10 +2707,20 @@ const Voucher = {
     this.summary();
   },
   summary() {
-    const del = V.del === 'recipient' ? `Email to ${$('#vREmail').value.trim() || 'recipient'}` : 'Email to you';
-    const when = V.del === 'recipient' && $('#vDate').value ? fmtDay(new Date($('#vDate').value + 'T00:00:00')) : 'Straight away';
-    $('#vSum').innerHTML = `<div><span>Gift voucher</span><b>£${V.amount}.00</b></div><div><span>For</span><b>${esc(V.to || '—')}</b></div><div><span>Delivery</span><b>${esc(del)}</b></div><div><span>Arrives</span><b>${esc(when)}</b></div><div class="tot"><span>Total</span><b>£${V.amount}.00</b></div>`;
-    $('#vPay').textContent = `Pay £${V.amount} securely`;
+    $('#vSum').innerHTML = `<div><span>Gift voucher</span><b>£${V.amount}.00</b></div><div><span>For</span><b>${esc(V.to || '—')}</b></div><div><span>From</span><b>${esc(V.from || '—')}</b></div><div class="tot"><span>To pay by phone or at the bar</span><b>£${V.amount}.00</b></div>`;
+    $('#vCall').href = $('#vPhone').href = 'tel:' + SITE.phoneIntl; $('#vPhone').textContent = SITE.phone;
+    $('#vOrder').href = this.orderMailto();
+  },
+  orderMailto() {
+    const subject = `Gift voucher order: £${V.amount}${V.to ? ' for ' + V.to : ''}`;
+    const body = [
+      'Hello Terrarium,', '', "I'd like to buy a gift voucher.", '',
+      `Value: £${V.amount}`, `For: ${V.to}`, `From: ${V.from}`, `Message on the voucher: ${V.msg || 'None'}`, '',
+      'How should it reach them? (email it to them / email it to me / I will collect it): ',
+      'Their email, if you are sending it to them: ', '',
+      'Best number to call me on to take payment: ', '', 'Thank you,', V.from
+    ].join('\n');
+    return `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   },
   check() {
     let ok = true; const bad = (id, msg) => { ok = false; const f = $('#' + id).closest('.f'); f.classList.add('is-bad'); const er = $('.err', f); if (er) er.textContent = msg; };
