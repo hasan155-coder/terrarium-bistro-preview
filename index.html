@@ -1105,7 +1105,7 @@ em,.it{font-style:italic}
     <div class="vteaser-copy">
       <div class="sec-label" data-r="fade"><span class="numeral">V.</span><span class="eyebrow">Gift vouchers</span></div>
       <h2 class="d-lg" data-r="words">The gift of an <em class="shimmer">evening.</em></h2>
-      <p class="body" data-r="up">Choose a value, add a message and watch the gold card come to life. Then call us or ask at the bar, and we will take payment and have it ready for them.</p>
+      <p class="body" data-r="up">Every Terrarium voucher carries its own number and its own pattern of gold, generated from that number. Choose a value, add a message and pay by card. We email it on the day you choose.</p>
       <div data-r="up"><a class="btn btn--solid" href="#vouchers" data-link data-magnetic>Create a voucher <svg class="arr"><use href="#arr"/></svg></a></div>
     </div>
     <div class="vstage" id="teaserStage" data-r="scale">
@@ -1373,6 +1373,8 @@ em,.it{font-style:italic}
       <div class="panel is-on" data-panel="0">
         <h2 class="d-md">How many guests?</h2>
         <div class="chips" id="bGuests"></div>
+        <div class="chips" id="bGuestsBig" hidden style="margin-top:.7rem"></div>
+        <div class="big-note" id="bDepNote" hidden></div>
         <div class="big-note" id="bPaused" hidden>Online booking is paused just now. Please call us on <span data-cfg="phone"></span> and we will look after you.</div>
         <div class="big-note" id="bLarge" hidden>For <span data-bignum-l>nine</span> or more guests, please call us on <span data-cfg="phone"></span>. We will set the table and talk you through menus for groups.</div>
       </div>
@@ -1401,7 +1403,8 @@ em,.it{font-style:italic}
             <div class="f f--full"><label for="bNotes">Anything we should know?</label><textarea id="bNotes" name="notes" placeholder="Allergies, high chair, a quiet corner…"></textarea></div>
             <label class="check f--full"><input type="checkbox" id="bNews"> Send me news of new menus and events at Terrarium. You can unsubscribe at any time.</label>
             <input type="text" id="bHoney" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-            <p class="f--full" style="margin:0;font-size:.8rem;color:var(--mute)">Your table is confirmed instantly. We use your details only to manage your booking.</p>
+            <p class="f--full" id="bConfirmNote" style="margin:0;font-size:.8rem;color:var(--mute)">Your table is confirmed instantly. We use your details only to manage your booking.</p>
+            <div class="big-note f--full" id="bDepTerms" hidden style="margin-top:0"></div>
             <div class="big-note f--full" id="bSendErr" role="alert" hidden></div>
           </div>
         </form>
@@ -1433,7 +1436,7 @@ em,.it{font-style:italic}
     <div class="phero-copy" style="max-width:920px">
       <div class="crumb" data-r="fade"><span class="numeral">I.</span><span class="eyebrow">Gift vouchers</span></div>
       <h1 class="d-xl" data-r="words">Give an <em class="shimmer">evening.</em></h1>
-      <p class="lead" data-r="up" style="--rd:.3s">Choose the value and write your message here. Then call us or ask at the bar: we take payment and have the voucher ready for you.</p>
+      <p class="lead" data-r="up" style="--rd:.3s">A gold-flecked Terrarium voucher with its own number, emailed on the day you choose or saved to give in person. Pay securely by card in a minute.</p>
     </div>
   </div>
 
@@ -1455,33 +1458,47 @@ em,.it{font-style:italic}
           </div>
         </div>
         <div class="vstep">
-          <div class="vstep-h"><b>iii.</b><h3>Buy it from us</h3></div>
-          <div class="sum" id="vSum"></div>
-          <div class="vbuy">
-            <a class="btn btn--solid" id="vCall" href="tel:+441829863469">Call to buy</a>
-            <a class="btn" id="vOrder" href="mailto:info@terrariumbistro.co.uk">Email us your order</a>
+          <div class="vstep-h"><b>iii.</b><h3>How should it arrive?</h3></div>
+          <div class="opts" id="vDelivery">
+            <button type="button" class="opt is-on" data-del="recipient"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M3 6.5h18v12H3z"/><path d="M3 6.5l9 6.5 9-6.5"/></svg><b>Email it to them</b><small>We send it to their inbox on the day you choose.</small></button>
+            <button type="button" class="opt" data-del="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M4 9h16v11H4zM2.5 6h19v3h-19zM12 6v14M12 6c-2-3.5-6-3.5-6-1s4 1 6 1c2 0 6 1.5 6-1s-4-2.5-6 1z"/></svg><b>Send it to me</b><small>Print it or forward it yourself.</small></button>
           </div>
-          <p class="vbuy-note">Call <a id="vPhone" href="tel:+441829863469">01829 863469</a> or ask at the bar next time you are in. We take card payment over the phone or in person. Nothing is charged on this website.</p>
+          <div class="fields">
+            <div class="f" id="vREmailWrap"><label for="vREmail">Their email</label><input id="vREmail" type="email" placeholder="name@example.com" autocomplete="off"><span class="err"></span></div>
+            <div class="f" id="vDateWrap"><label for="vDate">Delivery date</label><input id="vDate" type="date"><span class="err"></span></div>
+            <div class="f f--full"><label for="vPEmail">Your email, for the receipt</label><input id="vPEmail" type="email" placeholder="you@example.com" autocomplete="email"><span class="err"></span></div>
+          </div>
+        </div>
+        <div class="vstep">
+          <div class="vstep-h"><b>iv.</b><h3>Review and pay</h3></div>
+          <div class="sum" id="vSum"></div>
+          <div id="vPayBox">
+            <button class="btn btn--solid" type="button" id="vPay" style="width:100%">Pay £50 securely</button>
+            <p class="vbuy-note">You pay on Stripe's secure card page and come straight back here to your voucher. Prefer to pay in person? Call <a class="vPhone" href="tel:+441829863469">01829 863469</a> or ask at the bar.</p>
+            <span class="err" id="vPayErr" role="alert" style="font-size:.82rem;color:var(--err)"></span>
+          </div>
+          <div id="vPhoneBox" hidden>
+            <div class="vbuy">
+              <a class="btn btn--solid" id="vCall" href="tel:+441829863469">Call to buy</a>
+              <a class="btn" id="vOrder" href="mailto:info@terrariumbistro.co.uk">Email us your order</a>
+            </div>
+            <p class="vbuy-note">Call <a class="vPhone" href="tel:+441829863469">01829 863469</a> or ask at the bar next time you are in. We take card payment over the phone or in person.</p>
+          </div>
         </div>
       </div>
 
       <div class="issued" id="vIssued" aria-live="polite">
-        <span class="eyebrow">Voucher issued</span>
-        <h2 class="d-lg">It's <em class="shimmer">ready.</em></h2>
-        <div style="display:flex;flex-direction:column;gap:.6rem"><span class="eyebrow eyebrow--dim">Serial number</span><span class="serial" id="vSerial"></span></div>
+        <span class="eyebrow" id="vIsEyebrow">Payment received</span>
+        <h2 class="d-lg" id="vIsTitle">It's <em class="shimmer">ready.</em></h2>
+        <p class="body" id="vIsText" style="margin:0"></p>
+        <div style="display:flex;flex-direction:column;gap:.6rem"><span class="eyebrow eyebrow--dim">Voucher number</span><span class="serial" id="vSerial"></span></div>
         <dl class="done-list" id="vIssuedList"></dl>
         <div class="issued-actions">
           <button class="btn btn--solid" type="button" id="vSave">Save voucher image</button>
-          <a class="btn" id="vMailto" href="#">Open in email</a>
           <button class="btn btn--ghost" type="button" id="vShare" hidden>Share</button>
-          <button class="btn btn--ghost" type="button" id="vCopy">Copy serial</button>
+          <button class="btn btn--ghost" type="button" id="vCopy">Copy number</button>
         </div>
-        <span class="eyebrow" style="margin-top:.6rem">The email they will receive</span>
-        <div class="mailcard">
-          <div class="mail-top"><span>To: <b id="mTo"></b></span><span>Subject: <b id="mSubj"></b></span><span id="mWhen"></span></div>
-          <div class="mail-body"><p id="mHello"></p><img id="mImg" alt="Terrarium Bistro gift voucher"><p class="q" id="mMsg"></p><p id="mText"></p></div>
-        </div>
-        <div class="issued-actions"><button class="btn btn--ghost" type="button" id="vCopyMail">Copy email text</button><button class="btn btn--ghost" type="button" id="vAnother">Create another voucher</button></div>
+        <div class="issued-actions"><a class="btn" href="#book" data-link id="vBook">Book a table</a><button class="btn btn--ghost" type="button" id="vAnother">Buy another voucher</button></div>
       </div>
     </div>
 
@@ -1495,7 +1512,7 @@ em,.it{font-style:italic}
 
   <section class="wrap" style="padding-bottom:clamp(5rem,10vw,8rem)" aria-label="Voucher terms">
     <div class="terms">
-      <div data-r="up"><h4>How to buy</h4><p>Call us or ask at the bar. We take card payment by phone or in person and have the voucher ready to email or collect.</p></div>
+      <div data-r="up"><h4>One of a kind</h4><p>Each voucher has its own number, and its gold pattern is generated from that number, so no two look the same.</p></div>
       <div data-r="up" style="--rd:.1s"><h4>Valid for 12 months</h4><p>Use it against food and drink at Terrarium Bistro within a year of purchase. Quote the voucher number when you book or pay.</p></div>
       <div data-r="up" style="--rd:.2s"><h4>The small print</h4><p>Vouchers cannot be exchanged for cash. Keep your voucher number safe: it is what we check when you redeem.</p></div>
     </div>
@@ -1596,6 +1613,8 @@ const SITE = {
   hours: [['Monday', '10:00 – 22:00'], ['Tuesday', 'Closed'], ['Wednesday to Sunday', '10:00 – 22:00']],   // e.g. [['Tuesday to Saturday','9am to 10pm'],['Sunday','10am to 6pm']]
   booking: {
     maxOnline: 8,
+    depositFrom: 9, depositPerHead: 10, depositHours: 48,   // set on the tablet; the live values arrive from the booking system
+    payments: false,              // true once card payments are switched on in the booking system
     daysAhead: 120,
     closedWeekdays: [2],          // 0 = Sunday … 6 = Saturday (closed Tuesdays)
     slots: [
@@ -2269,6 +2288,7 @@ LB.el.addEventListener('click', e => {
 const B = { step: 0, guests: null, date: null, time: null, occ: 'None', view: null, live: false, days: {}, avail: null, req: 0 };
 const NUM_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
 const inPreview = () => !!(window.claude && typeof window.claude.use === 'function');
+const testPay = (() => { try { if (/[?&]testpay=1\b/.test(location.search)) sessionStorage.setItem('tb-testpay', '1'); return sessionStorage.getItem('tb-testpay') === '1'; } catch (e) { return /[?&]testpay=1\b/.test(location.search); } })();
 // Live availability and instant confirmation come from the Terrarium booking system (the same one the staff tablet uses).
 async function bookApi(path, opt = {}) {
   const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 12000);
@@ -2281,17 +2301,23 @@ async function bookApi(path, opt = {}) {
 const Book = {
   calReq: 0,
   init() {
-    const gwrap = $('#bGuests');
     this.buildGuests();
-    gwrap.addEventListener('click', e => {
+    const pickGuests = e => {
       const b = e.target.closest('.chip'); if (!b || b.disabled) return;
-      $$('.chip', gwrap).forEach(c => { c.classList.toggle('is-on', c === b); c.setAttribute('aria-pressed', c === b); });
+      if (b.dataset.g === 'more') {
+        const open = $('#bGuestsBig').hidden; $('#bGuestsBig').hidden = !open;
+        b.classList.toggle('is-on', open); b.setAttribute('aria-pressed', open); $('#bLarge').hidden = true;
+        return;
+      }
+      $$('#bGuests .chip, #bGuestsBig .chip').forEach(c => { const on = c === b || (c.dataset.g === 'more' && !$('#bGuestsBig').hidden && b.closest('#bGuestsBig')); c.classList.toggle('is-on', !!on); c.setAttribute('aria-pressed', !!on); });
       const big = b.dataset.g === 'big'; $('#bLarge').hidden = !big;
       const changed = !big && B.guests !== +b.dataset.g;
-      B.guests = big ? null : +b.dataset.g; this.sync();
+      B.guests = big ? null : +b.dataset.g; this.depNote(); this.sync();
       if (changed && B.live) { this.loadCalendar(); if (B.date) this.slots(); }
-      if (!big) setTimeout(() => { if (B.step === 0 && B.guests) this.goStep(1); }, 380);
-    });
+      if (!big) setTimeout(() => { if (B.step === 0 && B.guests) this.goStep(1); }, this.deposit() ? 1600 : 380);
+    };
+    $('#bGuests').addEventListener('click', pickGuests);
+    $('#bGuestsBig').addEventListener('click', pickGuests);
     const t = today(); B.view = new Date(t.getFullYear(), t.getMonth(), 1);
     $('#calPrev').addEventListener('click', () => { B.view.setMonth(B.view.getMonth() - 1); this.cal(); });
     $('#calNext').addEventListener('click', () => { B.view.setMonth(B.view.getMonth() + 1); this.cal(); });
@@ -2316,13 +2342,32 @@ const Book = {
     this.cal(); this.slots(); this.sync();
     this.loadCalendar();
   },
+  // Deposit (in pounds) this party pays online, or 0.
+  deposit(n = B.guests) { const k = SITE.booking; return k.payments && k.depositFrom > 0 && n >= k.depositFrom ? n * k.depositPerHead : 0; },
+  depNote() {
+    const k = SITE.booking, dep = this.deposit(), note = $('#bDepNote');
+    const rule = `It comes off your bill on the night${k.depositHours ? `, and we refund it in full if you cancel at least ${k.depositHours} hours before` : ''}.`;
+    note.hidden = !dep;
+    if (dep) note.innerHTML = `<b style="color:var(--cream);font-weight:500">Groups of ${k.depositFrom} or more pay a deposit of £${k.depositPerHead} a person.</b><br>For ${B.guests} guests that is £${dep}, paid by card when you book. ${rule}`;
+    $('#bDepTerms').hidden = !dep;
+    $('#bConfirmNote').textContent = dep ? 'We hold your table for 30 minutes while you pay the deposit, then confirm it straight away. We use your details only to manage your booking.' : 'Your table is confirmed instantly. We use your details only to manage your booking.';
+    if (dep) $('#bDepTerms').innerHTML = `<b style="color:var(--cream);font-weight:500">Deposit: £${dep}</b> (£${k.depositPerHead} a person). ${rule} Later cancellations and no-shows keep the deposit.`;
+  },
   buildGuests() {
-    const max = SITE.booking.maxOnline, gwrap = $('#bGuests');
+    const k = SITE.booking, max = k.maxOnline, gwrap = $('#bGuests');
+    // Up to eight on the first row; bigger groups (when the restaurant takes them online) open a second row.
+    const shown = Math.min(max, 8), more = max > shown;
+    const chip = n => `<button type="button" class="chip${B.guests === n ? ' is-on' : ''}" data-g="${n}" aria-pressed="${B.guests === n}">${n}</button>`;
     let h = '';
-    for (let n = 1; n <= max; n++) h += `<button type="button" class="chip${B.guests === n ? ' is-on' : ''}" data-g="${n}" aria-pressed="${B.guests === n}">${n}</button>`;
-    h += `<button type="button" class="chip" data-g="big" aria-pressed="false">${max + 1}+</button>`;
+    for (let n = 1; n <= shown; n++) h += chip(n);
+    h += more ? `<button type="button" class="chip${B.guests > shown ? ' is-on' : ''}" data-g="more" aria-pressed="${B.guests > shown}">${shown + 1}+</button>`
+      : `<button type="button" class="chip" data-g="big" aria-pressed="false">${max + 1}+</button>`;
     gwrap.innerHTML = h;
+    let h2 = '';
+    if (more) { for (let n = shown + 1; n <= max; n++) h2 += chip(n); h2 += `<button type="button" class="chip" data-g="big" aria-pressed="false">${max + 1}+</button>`; }
+    $('#bGuestsBig').innerHTML = h2; $('#bGuestsBig').hidden = !(more && B.guests > shown);
     if (B.guests > max) { B.guests = null; this.sync(); }
+    this.depNote();
     const word = NUM_WORDS[max + 1] || String(max + 1);
     $$('[data-bignum]').forEach(el => { el.textContent = word.charAt(0).toUpperCase() + word.slice(1); });
     $$('[data-bignum-l]').forEach(el => { el.textContent = word; });
@@ -2338,7 +2383,14 @@ const Book = {
       SITE.booking.daysAhead = r.daysAhead; SITE.booking.minNotice = r.minNotice;
       SITE.booking.closedWeekdays = r.closedWeekdays;
       SITE.booking.slots = r.services.map(s => [s.name, s.times]);
-      if (r.maxOnline !== SITE.booking.maxOnline) { SITE.booking.maxOnline = r.maxOnline; this.buildGuests(); }
+      const k = SITE.booking, wasPay = k.payments, changed = r.maxOnline !== k.maxOnline || r.depositFrom !== k.depositFrom || r.depositPerHead !== k.depositPerHead;
+      // Stripe test keys: card payments only for whoever opens the site with ?testpay=1 (so real guests never pay with a test card).
+      const live = r.paymentsMode ? r.paymentsMode === 'live' || (r.paymentsMode === 'test' && testPay) : !!r.payments;
+      Object.assign(k, { depositFrom: r.depositFrom ?? k.depositFrom, depositPerHead: r.depositPerHead ?? k.depositPerHead, depositHours: r.depositHours ?? k.depositHours, payments: live });
+      try { Voucher.payMode(); } catch (e) {}
+      // Without card payments, groups that need a deposit are asked to call.
+      const limit = k.payments || !(k.depositFrom > 0) ? r.maxOnline : Math.min(r.maxOnline, k.depositFrom - 1);
+      if (changed || wasPay !== k.payments || limit !== k.maxOnline) { k.maxOnline = limit; this.buildGuests(); }
       this.paused(!r.online);
       $('#bLive').hidden = false;
       this.cal();
@@ -2370,11 +2422,12 @@ const Book = {
     if (B.guests) parts.push(`${B.guests} ${B.guests === 1 ? 'guest' : 'guests'}`);
     if (B.date) parts.push(fmtDay(B.date));
     if (B.time) parts.push(B.time);
+    if (this.deposit()) parts.push(`£${this.deposit()} deposit`);
     $('#bSum').textContent = parts.length ? parts.join(' · ') : 'Choose your party size';
     $('#bBack').hidden = B.step === 0;
     const nx = $('#bNext');
     nx.disabled = !this.valid(B.step);
-    nx.firstChild.textContent = B.step === 3 ? 'Confirm booking ' : 'Continue ';
+    nx.firstChild.textContent = B.step === 3 ? (this.deposit() ? `Pay £${this.deposit()} deposit ` : 'Confirm booking ') : 'Continue ';
   },
   cal() {
     const t = today(), max = new Date(t); max.setDate(max.getDate() + SITE.booking.daysAhead);
@@ -2449,6 +2502,11 @@ const Book = {
           method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
           body: JSON.stringify({ date: ymd(d.date), time: d.time, guests: d.guests, first: d.first, last: d.last, email: d.email, phone: d.phone, occasion: d.occ, notes: d.notes, newsletter: d.news })
         });
+        if (r.ok && r.booking && r.deposit && r.deposit.url) {
+          // Big group: the table is held while they pay the deposit on our booking system's page (Stripe).
+          btn.innerHTML = '<span class="paying"><span class="spin"></span>Opening secure payment</span>';
+          location.href = r.deposit.url; return;
+        }
         if (r.ok && r.booking) { d.ref = r.booking.ref; d.emailed = !!r.emailed; d.duplicate = !!r.duplicate; } else problem = r;
       } catch (e) { problem = { code: 'network' }; }
     }
@@ -2502,7 +2560,8 @@ const Book = {
   },
   reset() {
     Object.assign(B, { step: 0, guests: null, date: null, time: null, occ: 'None', avail: null });
-    $$('#bGuests .chip').forEach(c => { c.classList.remove('is-on'); c.setAttribute('aria-pressed', 'false'); }); $('#bLarge').hidden = true;
+    $$('#bGuests .chip, #bGuestsBig .chip').forEach(c => { c.classList.remove('is-on'); c.setAttribute('aria-pressed', 'false'); }); $('#bLarge').hidden = true;
+    $('#bGuestsBig').hidden = true; this.depNote();
     $('#bForm').reset(); $$('#bOcc button').forEach((b, i) => { b.classList.toggle('is-on', !i); b.setAttribute('aria-pressed', !i); });
     $('#bTicket').hidden = false; $('#bDone').classList.remove('is-on'); $('#bSendErr').hidden = true;
     this.goStep(0); this.cal(); this.slots();
@@ -2640,7 +2699,7 @@ function drawVoucher(c, d) {
   g.strokeStyle = 'rgba(236,212,156,.2)'; g.beginPath(); g.moveTo(x0, by - 42 * s); g.lineTo(x1, by - 42 * s); g.stroke();
   g.font = `600 ${16 * s}px ${BODYF}`;
   g.fillStyle = d.serial ? '#ecd49c' : 'rgba(236,212,156,.5)';
-  spaced(g, d.serial ? 'Nº  ' + d.serial : (d.teaser ? 'A UNIQUE SERIAL ON EVERY VOUCHER' : 'Nº  ISSUED WHEN YOU BUY'), x0, by, 4.2 * s);
+  spaced(g, d.serial ? 'Nº  ' + d.serial : (d.teaser ? 'A UNIQUE SERIAL ON EVERY VOUCHER' : 'Nº  ISSUED WHEN YOU PAY'), x0, by, 4.2 * s);
   g.fillStyle = 'rgba(242,233,215,.62)';
   spaced(g, d.expiry ? 'VALID UNTIL ' + d.expiry.toUpperCase() : `VALID FOR ${SITE.voucher.validityMonths} MONTHS`, x1, by, 4 * s, 'right');
 }
@@ -2691,15 +2750,25 @@ const Voucher = {
       V[k] = e.target.value.trim(); if (k === 'msg') $('#vMsgCount').textContent = `${e.target.value.length} / 120`;
       e.target.closest('.f')?.classList.remove('is-bad'); this.update();
     }));
+    $('#vDelivery').addEventListener('click', e => {
+      const b = e.target.closest('.opt'); if (!b) return; V.del = b.dataset.del;
+      $$('#vDelivery .opt').forEach(o => o.classList.toggle('is-on', o === b));
+      $('#vREmailWrap').hidden = V.del !== 'recipient'; $('#vDateWrap').hidden = V.del !== 'recipient'; this.summary();
+    });
+    const t = today(), last = new Date(t); last.setDate(last.getDate() + 365);
+    $('#vDate').min = ymd(t); $('#vDate').max = ymd(last); $('#vDate').value = ymd(t);
     $$('#vBuilder input').forEach(i => i.addEventListener('input', () => { const f = i.closest('.f'); if (f) { f.classList.remove('is-bad'); const er = $('.err', f); if (er) er.textContent = ''; } this.summary(); }));
+    $('#vPay').addEventListener('click', () => this.pay());
     $('#vAnother').addEventListener('click', () => this.reset());
-    $('#vCopy').addEventListener('click', () => copyText(V.serial, 'Serial number'));
-    $('#vCopyMail').addEventListener('click', () => copyText(this.mailText(), 'Email text'));
+    $('#vCopy').addEventListener('click', () => copyText(V.serial, 'Voucher number'));
     $('#vSave').addEventListener('click', () => this.save());
     $('#vShare').addEventListener('click', () => this.share());
-    this.summary();
+    this.payMode(); this.summary();
     fontsReady.then(() => { this.teaser.render(Object.assign({}, V, { amount: 75, to: 'Someone special', from: 'Terrarium', msg: 'For the evening you deserve.', teaser: true })); this.update(); });
+    this.fromAddress();
   },
+  // Card payments when the booking system has them switched on; otherwise buy by phone or at the bar.
+  payMode() { const on = !!SITE.booking.payments && !inPreview(); $('#vPayBox').hidden = !on; $('#vPhoneBox').hidden = on; },
   markAmount() { $$('#vAmounts .chip').forEach(c => { const on = +c.dataset.a === V.amount && !$('#vCustom').value; c.classList.toggle('is-on', on); c.setAttribute('aria-pressed', on); }); },
   update() {
     cancelAnimationFrame(this.raf);
@@ -2707,19 +2776,18 @@ const Voucher = {
     this.summary();
   },
   summary() {
-    $('#vSum').innerHTML = `<div><span>Gift voucher</span><b>£${V.amount}.00</b></div><div><span>For</span><b>${esc(V.to || '—')}</b></div><div><span>From</span><b>${esc(V.from || '—')}</b></div><div class="tot"><span>To pay by phone or at the bar</span><b>£${V.amount}.00</b></div>`;
-    $('#vCall').href = $('#vPhone').href = 'tel:' + SITE.phoneIntl; $('#vPhone').textContent = SITE.phone;
+    const del = V.del === 'recipient' ? `Email to ${$('#vREmail').value.trim() || 'them'}` : 'Email to you';
+    const when = V.del === 'recipient' && $('#vDate').value ? fmtDay(new Date($('#vDate').value + 'T00:00:00')) : 'Straight away';
+    $('#vSum').innerHTML = `<div><span>Gift voucher</span><b>£${V.amount}.00</b></div><div><span>For</span><b>${esc(V.to || '—')}</b></div><div><span>Delivery</span><b>${esc(del)}</b></div><div><span>Arrives</span><b>${esc(when)}</b></div><div class="tot"><span>Total</span><b>£${V.amount}.00</b></div>`;
+    $('#vPay').textContent = `Pay £${V.amount} securely`;
+    $$('.vPhone').forEach(a => { a.href = 'tel:' + SITE.phoneIntl; a.textContent = SITE.phone; });
+    $('#vCall').href = 'tel:' + SITE.phoneIntl;
     $('#vOrder').href = this.orderMailto();
   },
   orderMailto() {
     const subject = `Gift voucher order: £${V.amount}${V.to ? ' for ' + V.to : ''}`;
-    const body = [
-      'Hello Terrarium,', '', "I'd like to buy a gift voucher.", '',
-      `Value: £${V.amount}`, `For: ${V.to}`, `From: ${V.from}`, `Message on the voucher: ${V.msg || 'None'}`, '',
-      'How should it reach them? (email it to them / email it to me / I will collect it): ',
-      'Their email, if you are sending it to them: ', '',
-      'Best number to call me on to take payment: ', '', 'Thank you,', V.from
-    ].join('\n');
+    const body = ['Hello Terrarium,', '', "I'd like to buy a gift voucher.", '', `Value: £${V.amount}`, `For: ${V.to}`, `From: ${V.from}`, `Message on the voucher: ${V.msg || 'None'}`, '',
+      'How should it reach them? (email it to them / email it to me / I will collect it): ', 'Their email, if you are sending it to them: ', '', 'Best number to call me on to take payment: ', '', 'Thank you,', V.from].join('\n');
     return `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   },
   check() {
@@ -2733,45 +2801,76 @@ const Voucher = {
     if (!ok) { const f = $('#vBuilder .is-bad input, #vBuilder .is-bad textarea'); if (f) { f.focus({ preventScroll: true }); scrollToY(scrollY + f.getBoundingClientRect().top - 160); } }
     return ok;
   },
+  // Opens Stripe's card page. The voucher is only issued once Stripe confirms the payment.
   async pay() {
-    if (!this.check()) return;
-    const btn = $('#vPay'); btn.disabled = true; btn.innerHTML = '<span class="paying"><span class="spin"></span>Processing</span>';
-    await wait(RM ? 200 : 1300);
-    V.serial = genSerial(); const now = today(); V.issued = now;
-    const ex = new Date(now); ex.setMonth(ex.getMonth() + SITE.voucher.validityMonths); V.expiry = fmtDate(ex);
-    V.seed = hashStr(V.serial);
-    const card = this.main.card; card.classList.remove('is-float'); card.style.transform = '';
-    if (!RM) { card.classList.remove('is-mint'); void card.offsetWidth; card.classList.add('is-mint'); await wait(620); }
-    this.main.render(V);
-    $('#vSeedNote').textContent = 'Pattern: unique to ' + V.serial;
-    $('#vHint').textContent = 'Issued ' + fmtDate(now);
-    await wait(RM ? 0 : 900); card.classList.remove('is-mint'); card.classList.add('is-float');
-    this.issuedView();
-    btn.disabled = false; this.summary();
+    if (!this.check() || this.paying) return;
+    const btn = $('#vPay'), err = $('#vPayErr'); err.textContent = '';
+    this.paying = true; btn.disabled = true; btn.innerHTML = '<span class="paying"><span class="spin"></span>Opening secure payment</span>';
+    let r = null;
+    try {
+      r = await bookApi('/voucher-checkout', { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({
+        amount: V.amount, to: V.to, from: V.from, message: V.msg, deliver: V.del === 'recipient' ? 'recipient' : 'buyer',
+        recipient_email: $('#vREmail').value.trim(), buyer_email: $('#vPEmail').value.trim(), send_on: V.del === 'recipient' ? $('#vDate').value : ''
+      }) });
+    } catch (e) { r = null; }
+    if (r && r.ok && r.url) { location.href = r.url; return; }
+    this.paying = false; btn.disabled = false; this.summary();
+    if (r && r.code === 'payments_off') { SITE.booking.payments = false; this.payMode(); toast('Card payments are not available just now. Call us or ask at the bar.'); return; }
+    err.textContent = (r && r.message) || `We could not open the card payment. Please try again, or call us on ${SITE.phone}.`;
   },
-  mailParts() {
-    const name = V.to, from = V.from;
-    const subject = `A gift from ${from}: an evening at Terrarium Bistro`;
-    const body = `Dear ${name},\n\n${from} has sent you a Terrarium Bistro gift voucher worth £${V.amount}.\n\n${V.msg ? '“' + V.msg + '”\n\n' : ''}Voucher number: ${V.serial}\nValid until: ${V.expiry}\n\nBook your table at ${SITE.website} and quote your voucher number when you book or pay.\n\nTerrarium Bistro · ${SITE.addressLine}\n${SITE.phone} · ${SITE.email} · ${SITE.website}`;
-    return { subject, body };
-  },
-  mailText() { const m = this.mailParts(); return `Subject: ${m.subject}\n\n${m.body}`; },
-  async issuedView() {
+  // Back from Stripe (?voucher=…), or someone opening their voucher link (?v=…&k=…).
+  async fromAddress() {
+    const q = new URLSearchParams(location.search);
+    const session = q.get('voucher'), serial = q.get('v'), k = q.get('k');
+    if (!session && !serial && !q.get('voucher_cancelled')) return;
+    try { history.replaceState(null, '', location.pathname + '#vouchers'); } catch (e) {}
+    if (q.get('voucher_cancelled')) { toast('Payment cancelled. Nothing was charged.'); return; }
+    if (inPreview() || !SITE.bookingApi) return;
     $('#vBuilder').hidden = true; const box = $('#vIssued'); box.classList.add('is-on');
-    $('#vSerial').textContent = V.serial;
-    const rcpt = V.del === 'recipient' ? $('#vREmail').value.trim() : $('#vPEmail').value.trim();
-    const rows = [['Value', `£${V.amount}`], ['For', V.to], ['From', V.from], ['Deliver to', rcpt], ['Valid until', V.expiry]];
-    $('#vIssuedList').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');
-    const m = this.mailParts();
-    $('#vMailto').href = `mailto:${encodeURIComponent(rcpt)}?subject=${encodeURIComponent(m.subject)}&body=${encodeURIComponent(m.body)}`;
-    $('#mTo').textContent = rcpt; $('#mSubj').textContent = m.subject;
-    $('#mWhen').textContent = V.del === 'recipient' && $('#vDate').value && $('#vDate').value !== ymd(today()) ? `Scheduled for ${fmtLong(new Date($('#vDate').value + 'T00:00:00'))}` : 'Sends straight away';
-    $('#mHello').textContent = `Dear ${V.to},`;
-    $('#mMsg').textContent = V.msg ? '“' + V.msg + '”' : '';
-    $('#mText').textContent = `${V.from} has sent you a Terrarium Bistro gift voucher worth £${V.amount}. Quote ${V.serial} when you book or pay. Valid until ${V.expiry}.`;
-    const sm = document.createElement('canvas'); sm.width = 1200; sm.height = 600; drawVoucher(sm, V); $('#mImg').src = sm.toDataURL('image/jpeg', .86);
+    $('#vIsEyebrow').textContent = session ? 'Payment received' : 'Gift voucher'; $('#vIsTitle').innerHTML = 'One <em class="shimmer">moment.</em>';
+    $('#vIsText').textContent = session ? 'Confirming your payment with Stripe…' : 'Opening your voucher…'; $('#vSerial').textContent = ''; $('#vIssuedList').innerHTML = '';
+    for (let i = 0; i < 12; i++) {
+      let r = null;
+      try { r = await bookApi(session ? `/voucher?session=${encodeURIComponent(session)}` : `/voucher?v=${encodeURIComponent(serial)}&k=${encodeURIComponent(k || '')}`); } catch (e) {}
+      if (r && r.ok && r.voucher) { this.issuedView(r.voucher, session ? 'buyer' : 'holder'); return; }
+      if (!r || r.status !== 202) {
+        $('#vIsTitle').innerHTML = 'Something is <em class="shimmer">missing.</em>';
+        $('#vIsText').textContent = (r && r.message) || `We could not load this just now. Please refresh, or call us on ${SITE.phone}.`;
+        $('#vAnother').textContent = 'Buy a voucher'; return;
+      }
+      await wait(2500);
+    }
+    $('#vIsText').textContent = `Your payment is still going through. We will email the voucher as soon as it does. Questions? Call ${SITE.phone}.`;
+  },
+  async issuedView(v, who) {
+    Object.assign(V, { amount: v.amount, to: v.to, from: v.from, msg: v.message || '', serial: v.serial, del: v.deliver === 'recipient' ? 'recipient' : 'me', seed: hashStr(v.serial) });
+    V.expiry = v.expires_on ? fmtDate(new Date(v.expires_on + 'T12:00:00')) : null;
+    $('#vBuilder').hidden = true; const box = $('#vIssued'); box.classList.add('is-on');
+    const card = this.main.card; card.classList.remove('is-float'); card.style.transform = '';
+    if (!RM && who === 'buyer') { card.classList.remove('is-mint'); void card.offsetWidth; card.classList.add('is-mint'); await wait(620); }
+    this.main.render(V);
+    $('#vSeedNote').textContent = 'Pattern: unique to ' + v.serial; $('#vHint').textContent = 'Valid until ' + (V.expiry || '');
+    if (who === 'buyer') setTimeout(() => { card.classList.remove('is-mint'); card.classList.add('is-float'); }, RM ? 0 : 900); else card.classList.add('is-float');
+    const later = v.deliver === 'recipient' && v.send_on && v.send_on > ymd(today());
+    const whenTxt = v.send_on ? fmtLong(new Date(v.send_on + 'T00:00:00')) : '';
+    const buyer = who === 'buyer';
+    $('#vIsEyebrow').textContent = buyer ? 'Payment received' : 'Your gift voucher';
+    $('#vIsTitle').innerHTML = buyer ? "It's <em class=\"shimmer\">ready.</em>" : v.status === 'active' ? `An evening, <em class="shimmer">for you.</em>` : `This voucher is <em class="shimmer">${v.status === 'used' ? 'spent.' : v.status === 'expired' ? 'out of date.' : 'no longer valid.'}</em>`;
+    $('#vIsText').textContent = buyer
+      ? (v.deliver === 'recipient' ? (later ? `We will email it to ${v.recipient_email} on ${whenTxt}, and your receipt is on its way to ${v.buyer_email}.` : `We have emailed it to ${v.recipient_email}, and your receipt is on its way to ${v.buyer_email}.`) : `We have emailed it to ${v.buyer_email}. Save the image or print it to give in person.`)
+      : v.status === 'active' ? `${v.from ? v.from + ' has given you' : 'This is'} an evening at Terrarium Bistro. Quote the number below when you book or pay.` : `Please call us on ${SITE.phone} if you think this is wrong.`;
+    $('#vSerial').textContent = v.serial;
+    const rows = [['Value', `£${v.amount}`], ...(v.balance !== v.amount ? [['Left to spend', `£${Number(v.balance).toFixed(v.balance % 1 ? 2 : 0)}`]] : []), ['For', v.to || '—'], ['From', v.from || '—'],
+      ...(buyer ? [['Delivery', v.deliver === 'recipient' ? `${later ? 'Email on ' + whenTxt : 'Emailed'} to ${v.recipient_email}` : `Emailed to you`]] : []), ['Valid until', V.expiry || '—']];
+    $('#vIssuedList').innerHTML = rows.map(([k, x]) => `<dt>${k}</dt><dd>${esc(x)}</dd>`).join('');
+    $('#vAnother').textContent = buyer ? 'Buy another voucher' : 'Buy a voucher';
     try { const blob = await this.png(); const f = new File([blob], this.fname(), { type: 'image/png' }); if (navigator.canShare && navigator.canShare({ files: [f] })) $('#vShare').hidden = false; } catch (e) {}
     const top = $('.vbuild').getBoundingClientRect().top; scrollToY(scrollY + top - 110);
+  },
+  mailParts() {
+    const subject = `A gift from ${V.from}: an evening at Terrarium Bistro`;
+    const body = `Dear ${V.to},\n\n${V.from} has sent you a Terrarium Bistro gift voucher worth £${V.amount}.\n\n${V.msg ? '“' + V.msg + '”\n\n' : ''}Voucher number: ${V.serial}\nValid until: ${V.expiry}\n\nBook your table at ${SITE.website} and quote your voucher number when you book or pay.`;
+    return { subject, body };
   },
   fname() { return `Terrarium-Voucher-${V.serial}.png`; },
   png() { const c = document.createElement('canvas'); c.width = 2400; c.height = 1200; drawVoucher(c, V); return new Promise(r => c.toBlob(r, 'image/png')); },
