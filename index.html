@@ -1474,15 +1474,8 @@ em,.it{font-style:italic}
           <div class="sum" id="vSum"></div>
           <div id="vPayBox">
             <button class="btn btn--solid" type="button" id="vPay" style="width:100%">Pay £50 securely</button>
-            <p class="vbuy-note">You pay on Stripe's secure card page and come straight back here to your voucher. Prefer to pay in person? Call <a class="vPhone" href="tel:+441829863469">01829 863469</a> or ask at the bar.</p>
+            <p class="vbuy-note" id="vPayNote">You pay on Stripe's secure card page and come straight back here to your voucher.</p>
             <span class="err" id="vPayErr" role="alert" style="font-size:.82rem;color:var(--err)"></span>
-          </div>
-          <div id="vPhoneBox" hidden>
-            <div class="vbuy">
-              <a class="btn btn--solid" id="vCall" href="tel:+441829863469">Call to buy</a>
-              <a class="btn" id="vOrder" href="mailto:info@terrariumbistro.co.uk">Email us your order</a>
-            </div>
-            <p class="vbuy-note">Call <a class="vPhone" href="tel:+441829863469">01829 863469</a> or ask at the bar next time you are in. We take card payment over the phone or in person.</p>
           </div>
         </div>
       </div>
@@ -2763,12 +2756,19 @@ const Voucher = {
     $('#vCopy').addEventListener('click', () => copyText(V.serial, 'Voucher number'));
     $('#vSave').addEventListener('click', () => this.save());
     $('#vShare').addEventListener('click', () => this.share());
-    this.payMode(); this.summary();
+    // The Pay button waits for the booking system to confirm card payments are on (a moment after load).
+    $('#vPay').disabled = !inPreview(); this.summary();
+    setTimeout(() => { if (this.payOn === undefined) this.payMode(); }, 6000);
     fontsReady.then(() => { this.teaser.render(Object.assign({}, V, { amount: 75, to: 'Someone special', from: 'Terrarium', msg: 'For the evening you deserve.', teaser: true })); this.update(); });
     this.fromAddress();
   },
   // Card payments when the booking system has them switched on; otherwise buy by phone or at the bar.
-  payMode() { const on = !!SITE.booking.payments && !inPreview(); $('#vPayBox').hidden = !on; $('#vPhoneBox').hidden = on; },
+  // Card payments only. Until the booking system confirms they are switched on, the Pay button waits.
+  payMode() {
+    const on = !!SITE.booking.payments || inPreview(), btn = $('#vPay');
+    this.payOn = on; btn.disabled = !on; this.summary();
+    $('#vPayNote').textContent = on ? "You pay on Stripe's secure card page and come straight back here to your voucher." : 'Online voucher sales are opening shortly. Please check back soon.';
+  },
   markAmount() { $$('#vAmounts .chip').forEach(c => { const on = +c.dataset.a === V.amount && !$('#vCustom').value; c.classList.toggle('is-on', on); c.setAttribute('aria-pressed', on); }); },
   update() {
     cancelAnimationFrame(this.raf);
@@ -2779,16 +2779,7 @@ const Voucher = {
     const del = V.del === 'recipient' ? `Email to ${$('#vREmail').value.trim() || 'them'}` : 'Email to you';
     const when = V.del === 'recipient' && $('#vDate').value ? fmtDay(new Date($('#vDate').value + 'T00:00:00')) : 'Straight away';
     $('#vSum').innerHTML = `<div><span>Gift voucher</span><b>£${V.amount}.00</b></div><div><span>For</span><b>${esc(V.to || '—')}</b></div><div><span>Delivery</span><b>${esc(del)}</b></div><div><span>Arrives</span><b>${esc(when)}</b></div><div class="tot"><span>Total</span><b>£${V.amount}.00</b></div>`;
-    $('#vPay').textContent = `Pay £${V.amount} securely`;
-    $$('.vPhone').forEach(a => { a.href = 'tel:' + SITE.phoneIntl; a.textContent = SITE.phone; });
-    $('#vCall').href = 'tel:' + SITE.phoneIntl;
-    $('#vOrder').href = this.orderMailto();
-  },
-  orderMailto() {
-    const subject = `Gift voucher order: £${V.amount}${V.to ? ' for ' + V.to : ''}`;
-    const body = ['Hello Terrarium,', '', "I'd like to buy a gift voucher.", '', `Value: £${V.amount}`, `For: ${V.to}`, `From: ${V.from}`, `Message on the voucher: ${V.msg || 'None'}`, '',
-      'How should it reach them? (email it to them / email it to me / I will collect it): ', 'Their email, if you are sending it to them: ', '', 'Best number to call me on to take payment: ', '', 'Thank you,', V.from].join('\n');
-    return `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    if (!this.paying) $('#vPay').textContent = this.payOn === false ? 'Card payments opening soon' : `Pay £${V.amount} securely`;
   },
   check() {
     let ok = true; const bad = (id, msg) => { ok = false; const f = $('#' + id).closest('.f'); f.classList.add('is-bad'); const er = $('.err', f); if (er) er.textContent = msg; };
@@ -2803,19 +2794,19 @@ const Voucher = {
   },
   // Opens Stripe's card page. The voucher is only issued once Stripe confirms the payment.
   async pay() {
-    if (!this.check() || this.paying) return;
+    if (!this.check() || this.paying || this.payOn === false) return;
     const btn = $('#vPay'), err = $('#vPayErr'); err.textContent = '';
     this.paying = true; btn.disabled = true; btn.innerHTML = '<span class="paying"><span class="spin"></span>Opening secure payment</span>';
     let r = null;
     try {
       r = await bookApi('/voucher-checkout', { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({
         amount: V.amount, to: V.to, from: V.from, message: V.msg, deliver: V.del === 'recipient' ? 'recipient' : 'buyer',
-        recipient_email: $('#vREmail').value.trim(), buyer_email: $('#vPEmail').value.trim(), send_on: V.del === 'recipient' ? $('#vDate').value : ''
+        recipient_email: $('#vREmail').value.trim(), buyer_email: $('#vPEmail').value.trim(), send_on: V.del === 'recipient' ? $('#vDate').value : '', back: location.origin + location.pathname
       }) });
     } catch (e) { r = null; }
     if (r && r.ok && r.url) { location.href = r.url; return; }
     this.paying = false; btn.disabled = false; this.summary();
-    if (r && r.code === 'payments_off') { SITE.booking.payments = false; this.payMode(); toast('Card payments are not available just now. Call us or ask at the bar.'); return; }
+    if (r && r.code === 'payments_off') { SITE.booking.payments = false; this.payMode(); toast('Card payments are not available just now. Please try again shortly.'); return; }
     err.textContent = (r && r.message) || `We could not open the card payment. Please try again, or call us on ${SITE.phone}.`;
   },
   // Back from Stripe (?voucher=…), or someone opening their voucher link (?v=…&k=…).
