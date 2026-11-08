@@ -2346,12 +2346,12 @@ const Book = {
   deposit(n = B.guests) { const k = SITE.booking; return k.payments && k.depositFrom > 0 && n >= k.depositFrom ? n * k.depositPerHead : 0; },
   depNote() {
     const k = SITE.booking, dep = this.deposit(), note = $('#bDepNote');
-    const rule = `It comes off your bill on the night${k.depositHours ? `, and we refund it in full if you cancel at least ${k.depositHours} hours before` : ''}.`;
+    const rule = `The deposit will be deducted from your final bill on the day of your reservation.${k.depositHours ? ` Cancellations made at least ${k.depositHours} hours before your reservation will receive a full refund. Cancellations made within ${k.depositHours} hours of your reservation, and non-attendance, will result in the deposit being forfeited.` : ''}`;
     note.hidden = !dep;
-    if (dep) note.innerHTML = `<b style="color:var(--cream);font-weight:500">Groups of ${k.depositFrom} or more pay a deposit of £${k.depositPerHead} a person.</b><br>For ${B.guests} guests that is £${dep}, paid by card when you book. ${rule}`;
+    if (dep) note.innerHTML = `<b style="color:var(--cream);font-weight:500">A deposit of £${k.depositPerHead} per guest is required for parties of ${k.depositFrom} or more.</b><br>For ${B.guests} guests, a deposit of £${dep} is payable by card at the time of booking. ${rule}`;
     $('#bDepTerms').hidden = !dep;
-    $('#bConfirmNote').textContent = dep ? 'We hold your table for 30 minutes while you pay the deposit, then confirm it straight away. We use your details only to manage your booking.' : 'Your table is confirmed instantly. We use your details only to manage your booking.';
-    if (dep) $('#bDepTerms').innerHTML = `<b style="color:var(--cream);font-weight:500">Deposit: £${dep}</b> (£${k.depositPerHead} a person). ${rule} Later cancellations and no-shows keep the deposit.`;
+    $('#bConfirmNote').textContent = dep ? 'Your table will be held for 30 minutes while the deposit is paid, and confirmed as soon as payment is received. We use your details only to manage your booking.' : 'Your table is confirmed instantly. We use your details only to manage your booking.';
+    if (dep) $('#bDepTerms').innerHTML = `<b style="color:var(--cream);font-weight:500">Deposit: £${dep}</b> (£${k.depositPerHead} per guest). ${rule}`;
   },
   buildGuests() {
     const k = SITE.booking, max = k.maxOnline, gwrap = $('#bGuests');
