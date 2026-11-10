@@ -921,18 +921,67 @@ em,.it{font-style:italic}
   .masonry .tile-g{--tk:10px;--tb:6px;margin-bottom:calc(.7rem + var(--tb))}
 }
 
-/* ---------- soft glass highlight behind any text that sits on a photograph ---------- */
-:root{--glass-bg:rgba(20,17,12,.52);--glass-line:rgba(214,186,130,.26);--glass-blur:blur(10px) saturate(1.15);--glass-shadow:0 18px 50px -24px rgba(0,0,0,.55)}
-.hero-copy,.hero-foot p,.h-cap-in,.hero-scroll,.h-side,.tile-g .cap,.hdr.on-photo .brand-word{background:var(--glass-bg);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-line);border-radius:4px;box-shadow:var(--glass-shadow)}
-.hero-copy{justify-self:start;align-self:start;width:fit-content;max-width:100%;gap:1.5rem;padding:clamp(1.05rem,2.3vw,1.7rem) clamp(1.15rem,2.7vw,2.1rem)}
-.hero-foot p{justify-self:start;width:fit-content;max-width:100%;padding:.8rem 1.1rem}
-.h-cap-in{display:inline-block;padding:.9rem 1.15rem;text-align:right}
-.hero-scroll{padding:.8rem .95rem}
-.h-side{padding:1rem .6rem;border-radius:999px}
-.hero .btn:not(.btn--solid),.hdr.on-photo .burger,.hdr.on-photo .nav a:not(.is-active),.hdr.on-photo .btn-book:not(.btn--solid){background:var(--glass-bg);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur)}
-.hdr.on-photo .brand-word{padding:.45rem .7rem}
-.tile-g .cap{left:.6rem;right:auto;bottom:.6rem;max-width:calc(100% - 1.2rem);padding:.6rem .8rem;transform:none;opacity:1}
-@media (max-width:960px){.tile-g .cap{left:.45rem;bottom:.45rem;max-width:calc(100% - .9rem);padding:.45rem .6rem}}
+/* ---------- v13 · cinematic hero: the words sit in the light of the photograph, never in boxes ---------- */
+/* the grade: deep warm shadow where the words sit, the food left lit, a soft top for the header */
+.h-arch-win::after{z-index:3;background:
+  linear-gradient(180deg,rgba(9,7,5,.84) 0%,rgba(9,7,5,.6) 18%,rgba(9,7,5,.34) 37%,rgba(9,7,5,0) 50%,rgba(9,7,5,0) 56%,rgba(9,7,5,.5) 72%,rgba(9,7,5,.94) 100%),
+  radial-gradient(120% 60% at 0% 30%,rgba(9,7,5,.72) 0%,rgba(9,7,5,.28) 46%,rgba(9,7,5,0) 72%)}
+@media (min-width:961px){.h-arch-win::after{background:
+  linear-gradient(90deg,rgba(9,7,5,.88) 0%,rgba(9,7,5,.58) 33%,rgba(9,7,5,.1) 60%,rgba(9,7,5,.22) 100%),
+  linear-gradient(180deg,rgba(9,7,5,.62) 0%,rgba(9,7,5,0) 22%,rgba(9,7,5,0) 62%,rgba(9,7,5,.88) 100%)}}
+/* candle-warm light drifting across the table, and a whisper of film grain */
+.h-light{position:absolute;inset:-6%;z-index:1;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(38% 28% at 74% 28%,rgba(255,186,104,.26),rgba(255,186,104,0) 70%),radial-gradient(30% 22% at 22% 80%,rgba(255,160,86,.14),rgba(255,160,86,0) 70%);
+  animation:lightDrift 15s ease-in-out infinite alternate}
+.h-light::after{content:"";position:absolute;inset:-50%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");opacity:.11;mix-blend-mode:overlay;animation:grain 1.2s steps(5) infinite}
+@keyframes lightDrift{from{transform:translate3d(-4%,3%,0) scale(1)}to{transform:translate3d(5%,-4%,0) scale(1.14)}}
+.h-arch{--px:0;--py:0}
+.hero{--sy:0}
+.h-arch-win{transform:translate3d(calc(var(--px) * -18px),calc(var(--py) * -12px + var(--sy) * .3px),0) scale(1.05);will-change:transform}
+/* each photo glides in on a soft diagonal edge, then drifts slowly in its own direction */
+.h-slide{clip-path:none;-webkit-mask-image:linear-gradient(105deg,#000 34%,rgba(0,0,0,0) 66%);mask-image:linear-gradient(105deg,#000 34%,rgba(0,0,0,0) 66%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-position:100% 0;mask-position:100% 0}
+.h-slide.is-on{-webkit-mask-position:0 0;mask-position:0 0}
+.h-slide.wipe{transition:-webkit-mask-position 1.9s cubic-bezier(.55,.06,.3,1),mask-position 1.9s cubic-bezier(.55,.06,.3,1)}
+.h-slide img{transform:scale(var(--k0,1.16)) translate3d(var(--x0,0),var(--y0,0),0);will-change:transform}
+.h-slide.kb img{animation:kbDrift 9.5s cubic-bezier(.3,.05,.3,1) forwards}
+@keyframes kbDrift{from{transform:scale(var(--k0,1.16)) translate3d(var(--x0,0),var(--y0,0),0)}to{transform:scale(var(--k1,1.03)) translate3d(var(--x1,0),var(--y1,0),0)}}
+
+/* the words */
+.hero-copy{gap:1.7rem;transform:translate3d(0,calc(var(--sy) * -.2px),0);opacity:calc(1 - var(--sy) / 620)}
+.hero-copy .eyebrow{display:flex;align-items:center;gap:1rem;color:var(--gold-hi);letter-spacing:.36em;text-shadow:0 1px 16px rgba(0,0,0,.6)}
+.hero-copy .eyebrow::before{content:"";flex:none;width:clamp(36px,5vw,64px);height:1px;background:linear-gradient(90deg,var(--gold-hi),rgba(236,212,156,.15));transform:scaleX(0);transform-origin:0 50%;transition:transform 1.5s var(--ease) .35s}
+.hero-copy .eyebrow.is-in::before{transform:scaleX(1)}
+.anim .hero-copy .eyebrow{opacity:0;letter-spacing:.85em;filter:blur(6px);transition:opacity 1.5s var(--ease),letter-spacing 2s var(--ease),filter 1.5s var(--ease)}
+.anim .hero-copy .eyebrow.is-in{opacity:1;letter-spacing:.36em;filter:none}
+.hero-copy .d-xl{text-shadow:0 2px 44px rgba(0,0,0,.5)}
+.hero-copy .d-xl em{position:relative;text-shadow:none;filter:drop-shadow(0 3px 22px rgba(0,0,0,.45))}
+.hero-copy .d-xl em::after{content:"";position:absolute;left:-1%;right:-8%;bottom:-.1em;height:.3em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 26' preserveAspectRatio='none'%3E%3Cpath d='M3 18 C 46 8, 112 4, 197 11' fill='none' stroke='%23e2c287' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M34 22 C 84 16, 138 15, 178 17' fill='none' stroke='%23e2c287' stroke-width='1.3' stroke-linecap='round' opacity='.7'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;clip-path:inset(0 100% 0 0);transition:clip-path 1.4s var(--ease) 1.65s;pointer-events:none}
+.hero-copy .d-xl.is-in em::after{clip-path:inset(0 0 0 0)}
+.hero [data-r="words"] .w{overflow:visible}
+.anim .hero [data-r="words"] .wi{opacity:0;filter:blur(10px);transform:translateY(38%) rotate(1.5deg);transition:transform 1.3s var(--ease),opacity 1.1s var(--ease),filter 1.3s var(--ease);transition-delay:calc(var(--rd,0s) + var(--wi,0) * 90ms)}
+.anim .hero [data-r="words"].is-in .wi{opacity:1;filter:none;transform:none}
+.hero-foot p{font:italic 400 clamp(1.3rem,2vw,1.7rem)/1.32 var(--f-d);color:var(--cream);padding:.15rem 0 .15rem 1.15rem;position:relative;text-shadow:0 1px 22px rgba(0,0,0,.6)}
+.hero-foot p::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--gold-hi),rgba(236,212,156,0));transform:scaleY(0);transform-origin:50% 0;transition:transform 1.4s var(--ease) 1.1s}
+.hero-foot p.is-in::before{transform:scaleY(1)}
+.hero .btn{background:rgba(9,7,5,.22);border-color:rgba(226,198,142,.78)}
+.hero .btn::after{content:"";position:absolute;top:-10%;bottom:-10%;left:0;width:38%;background:linear-gradient(100deg,rgba(255,240,205,0),rgba(255,240,205,.32),rgba(255,240,205,0));transform:translateX(-170%) skewX(-18deg);animation:btnSheen 6s var(--ease) 3s infinite;pointer-events:none}
+@keyframes btnSheen{0%{transform:translateX(-170%) skewX(-18deg)}32%,100%{transform:translateX(380%) skewX(-18deg)}}
+.h-cap-in{text-align:right}
+.h-cap .eyebrow{display:inline-flex;align-items:center;gap:.7rem;text-shadow:0 1px 14px rgba(0,0,0,.6)}
+.h-cap .eyebrow::before{content:"";width:28px;height:1px;background:var(--gold-hi)}
+.h-cap p{text-shadow:0 2px 26px rgba(0,0,0,.6)}
+.hero-scroll .eyebrow,.hero-count,.h-vert{text-shadow:0 1px 12px rgba(0,0,0,.6)}
+/* the header over the photograph: no boxes, just light type */
+.hdr.on-photo .brand-word{text-shadow:0 1px 14px rgba(0,0,0,.55)}
+.hdr.on-photo .nav a{background:none;-webkit-backdrop-filter:none;backdrop-filter:none;text-shadow:0 1px 12px rgba(0,0,0,.6)}
+.hdr.on-photo .nav a{border-color:transparent}
+.hdr.on-photo .nav a::after{content:"";position:absolute;left:1.05rem;right:1.05rem;bottom:.42rem;height:1px;background:linear-gradient(90deg,var(--gold-hi),rgba(236,212,156,.2));transform:scaleX(0);transform-origin:0 50%;transition:transform .6s var(--ease)}
+.hdr.on-photo .nav a:hover::after,.hdr.on-photo .nav a.is-active::after{transform:scaleX(1)}
+.hdr.on-photo .nav a.is-active{background:none;color:var(--gold-hi)}
+.eb-br{display:none}
+@media (max-width:560px){.hero-copy .eyebrow{align-items:flex-start;line-height:1.9}.hero-copy .eyebrow::before{margin-top:.95em}.eb-br{display:inline}}
+.hdr.on-photo .burger{background:rgba(9,7,5,.22);border-color:rgba(226,198,142,.6)}
+@media (prefers-reduced-motion:reduce){.h-light,.h-light::after,.hero .btn::after{animation:none}.h-arch-win,.hero-copy{transform:none;opacity:1}}
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
@@ -1028,13 +1077,14 @@ em,.it{font-style:italic}
     <span class="numeral hero-numeral" aria-hidden="true">I.</span>
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow" data-r="fade">A place to linger. A reason to return.</p>
+        <p class="eyebrow" data-r="fade"><span>A place to linger. <br class="eb-br">A reason to return.</span></p>
         <h1 class="d-xl" data-r="words">Some evenings<br>deserve <em class="shimmer">more.</em></h1>
       </div>
       <div class="hero-arch-col">
         <div class="h-arch" id="hArch">
           <div class="h-arch-frame" data-r="fade" style="--rd:.5s"></div>
           <div class="h-arch-win" id="hWin"></div>
+          <div class="h-light" aria-hidden="true"></div>
           <div class="h-cap" id="hCap"><div class="h-cap-in"><span class="eyebrow" id="hCapK">The Terrarium table</span><p id="hCapT">A moment, beautifully made.</p></div></div>
           <div class="h-badge" data-r="scale" style="--rd:.7s"><svg><use href="#mono"/></svg></div>
         </div>
@@ -1042,7 +1092,7 @@ em,.it{font-style:italic}
       </div>
     </div>
     <div class="wrap hero-foot">
-      <p data-r="up" style="--rd:.35s">Thoughtful food. Beautiful company.<br>An evening, made memorable.</p>
+      <p data-r="words" style="--rd:1.05s">Thoughtful food. Beautiful company.<br>An evening, made memorable.</p>
       <a class="btn" href="#menu" data-link data-r="up" style="--rd:.5s" data-magnetic>Explore the menu <svg class="arr"><use href="#arr"/></svg></a>
       <div class="hero-scroll" data-r="fade" style="--rd:.7s"><span class="eyebrow">Scroll to savour</span><span class="hero-count" id="hCount">01 / 06</span><span class="scroll-cue"></span></div>
     </div>
@@ -1900,8 +1950,12 @@ const Hero = {
   i: 0, timer: null, slides: [],
   build() {
     const win = $('#hWin'), dots = $('#hDots');
+    // each photo drifts its own way: push in, pull back, pan left, pan right
+    const moves = [['1.18', '1.04', '-2.2%', '1.6%', '1%', '-1.2%'], ['1.05', '1.17', '1.4%', '-1.8%', '-.6%', '1.4%'], ['1.16', '1.06', '2.4%', '-1.4%', '1.6%', '0%'], ['1.06', '1.15', '-1.6%', '1.2%', '1.2%', '-1.6%']];
     HERO.forEach((h, i) => {
       const f = document.createElement('figure'); f.className = 'h-slide' + (i === 0 ? ' is-on' : '');
+      const m = moves[i % moves.length];
+      ['--k0', '--k1', '--x0', '--x1', '--y0', '--y1'].forEach((k, j) => f.style.setProperty(k, m[j]));
       f.innerHTML = `<img src="img/${h.img}.jpg" alt="${esc(h.t.replace(/\.$/, ''))}" style="object-position:${h.pos}" ${i ? 'loading="lazy"' : ''}>`;
       win.appendChild(f); this.slides.push(f);
       const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-label', `Photo ${i + 1}: ${h.t}`);
@@ -1911,6 +1965,15 @@ const Hero = {
     });
     $('#hCap').addEventListener('pointerenter', () => this.stop());
     $('#hCap').addEventListener('pointerleave', () => this.play());
+    if (RM) return;
+    // the photograph leans towards the cursor, and sinks slower than the page as you scroll
+    const hero = $('#hero'), arch = $('#hArch');
+    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+    const lean = () => { cx += (tx - cx) * .06; cy += (ty - cy) * .06; arch.style.setProperty('--px', cx.toFixed(4)); arch.style.setProperty('--py', cy.toFixed(4)); raf = Math.abs(tx - cx) + Math.abs(ty - cy) > .0008 ? requestAnimationFrame(lean) : 0; };
+    hero.addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; const r = hero.getBoundingClientRect(); tx = (e.clientX - r.left) / r.width - .5; ty = (e.clientY - r.top) / r.height - .5; if (!raf) raf = requestAnimationFrame(lean); });
+    hero.addEventListener('pointerleave', () => { tx = ty = 0; if (!raf) raf = requestAnimationFrame(lean); });
+    let sq = 0;
+    addEventListener('scroll', () => { if (sq) return; sq = requestAnimationFrame(() => { sq = 0; if (Router.cur === 'home') hero.style.setProperty('--sy', Math.min(scrollY, innerHeight * 1.2).toFixed(1)); }); }, { passive: true });
   },
   kb(i) { const s = this.slides[i]; s.classList.remove('kb'); void s.offsetWidth; s.classList.add('kb'); },
   show(i) {
@@ -1918,9 +1981,13 @@ const Hero = {
     const prev = this.slides[this.i], next = this.slides[i];
     this.slides.forEach(s => s.style.zIndex = '');
     prev.style.zIndex = 1; next.style.zIndex = 2;
-    next.classList.add('is-on'); this.kb(i);
-    if (!RM) next.animate([{ clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)' }], { duration: 1500, easing: EASE_IO }).onfinish = () => { if (this.slides[this.i] !== prev) prev.classList.remove('is-on', 'kb'); };
-    else prev.classList.remove('is-on', 'kb');
+    this.kb(i);
+    if (!RM) {
+      // soft diagonal wipe: the new photo slides in over the old one, which keeps drifting underneath
+      next.classList.remove('is-on'); next.classList.add('wipe'); void next.offsetWidth; next.classList.add('is-on');
+      clearTimeout(this.wt);
+      this.wt = setTimeout(() => { this.slides.forEach((s, j) => { s.classList.remove('wipe'); if (j !== this.i) s.classList.remove('is-on', 'kb'); }); }, 2100);
+    } else { next.classList.add('is-on'); prev.classList.remove('is-on', 'kb'); }
     const cap = $('#hCap'); cap.classList.add('is-swap');
     setTimeout(() => { $('#hCapK').textContent = HERO[i].k; $('#hCapT').textContent = HERO[i].t; cap.classList.remove('is-swap'); }, 560);
     $$('#hDots button').forEach((b, j) => b.classList.toggle('is-on', j === i));
